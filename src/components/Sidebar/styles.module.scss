@@ -1,0 +1,45 @@
+.sidebar{
+  color: white;
+  background: #100003;
+  height: 100vh;
+  width: 15vw;
+  padding: 20px;
+  border-right: 2px solid white;
+
+  h1{
+    text-transform: uppercase;
+    font-size: 20px;
+    font-style: italic;
+    margin-bottom: 5px;
+  }
+}
+
+.navbar{
+  margin-top: 50px;
+  li{
+    color: white;
+    list-style: none;
+    span{
+      color: white;
+    }
+    a{
+      text-decoration: none;
+    }
+    :hover{
+
+      color: yellow;
+    }
+  }
+}
+
+.logoContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed black;
+  :nth-child(2){
+    margin-left: 5px;
+  }
+}
