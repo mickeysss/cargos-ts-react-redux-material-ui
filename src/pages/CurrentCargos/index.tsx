@@ -1,7 +1,6 @@
 import React, { Dispatch } from 'react';
 
-import CargoTable from './CargoTable';
-import AddCargo from '../AddCargo';
+import { TableComponent, ModalComponent } from '../../components';
 
 import { cargoType } from '../../App';
 
@@ -17,9 +16,9 @@ const CurrentCargos = ({ cargos, setCargos }: Props) => {
         <div className={styles.flexContainer}>
             <h2 className={styles.title}>Current cargos</h2>
             <div className={styles.cargosList}>
-                <CargoTable cargos={cargos} />
+                <TableComponent cargos={cargos} />
             </div>
-            <AddCargo cargos={cargos} setCargos={setCargos} />
+            <ModalComponent cargos={cargos} setCargos={setCargos} />
         </div>
     );
 };

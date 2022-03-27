@@ -24,7 +24,7 @@ type Props = {
     setCargos: Dispatch<React.SetStateAction<cargoType[]>>;
 };
 
-const AddCargo = ({ cargos, setCargos }: Props) => {
+const ModalComponent = ({ cargos, setCargos }: Props) => {
     const [open, setOpen] = React.useState(false);
 
     const [newCargo, setNewCargo] = useState({
@@ -90,4 +90,4 @@ const AddCargo = ({ cargos, setCargos }: Props) => {
     );
 };
 
-export default AddCargo;
+export default ModalComponent;
