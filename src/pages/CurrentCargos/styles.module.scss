@@ -1,0 +1,23 @@
+.flexContainer{
+  width: 85vw;
+  height: 100vh;
+  padding: 50px;
+
+  .title{
+    color: aliceblue;
+    font-size: 38px;
+    margin-bottom: 15px;
+  }
+}
+
+.cargosTitleList{
+  font-size: 28px;
+  font-weight: 550;
+  width: 64vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
