@@ -21,7 +21,7 @@ type Props = {
     cargos: cargoType[];
 };
 
-const CargoTable = ({ cargos }: Props) => {
+const TableComponent = ({ cargos }: Props) => {
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
             <ThemeProvider theme={theme}>
@@ -77,4 +77,4 @@ const columns: GridColumns = [
     },
 ];
 
-export default CargoTable;
+export default TableComponent;
