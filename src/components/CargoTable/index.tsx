@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import { cargoType } from '../../App';
+import { Dispatch } from 'react';
 
+import { cargoType } from '../../App';
 import {
     DataGrid,
     GridColumns,
@@ -19,17 +20,22 @@ const theme = createTheme({
 
 type Props = {
     cargos: cargoType[];
+    setSelectedCargo: Dispatch<React.SetStateAction<{ [key: string]: any }>>;
 };
 
-const TableComponent = ({ cargos }: Props) => {
+const CargoTable = ({ cargos, setSelectedCargo }: Props) => {
+    const selectedCargoHandler = (e: {
+        row: React.SetStateAction<{ [key: string]: any }>;
+    }) => setSelectedCargo(e.row);
+
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
             <ThemeProvider theme={theme}>
                 <DataGrid
                     rows={cargos}
                     columns={columns}
-                    showColumnRightBorder={true}
                     experimentalFeatures={{ newEditingApi: true }}
+                    onRowClick={(e: any) => selectedCargoHandler(e)}
                 />
             </ThemeProvider>
         </div>
@@ -44,7 +50,7 @@ const columns: GridColumns = [
             return { ...params.props, error: hasError };
         },
         headerName: 'Name',
-        width: 200,
+        width: 300,
         editable: true,
         align: 'left',
         headerAlign: 'left',
@@ -56,7 +62,7 @@ const columns: GridColumns = [
             return { ...params.props, error: hasError };
         },
         headerName: 'Category',
-        width: 200,
+        width: 300,
         type: 'string',
         editable: true,
         align: 'left',
@@ -69,12 +75,20 @@ const columns: GridColumns = [
             return { ...params.props, error: hasError };
         },
         headerName: 'Quantity',
-        width: 200,
+        width: 300,
         type: 'number',
         editable: true,
         align: 'left',
         headerAlign: 'left',
     },
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 300,
+        type: 'string',
+        align: 'left',
+        headerAlign: 'left',
+    },
 ];
 
-export default TableComponent;
+export default CargoTable;
