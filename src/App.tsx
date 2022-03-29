@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { Sidebar } from './components';
-import CurrentCargos from './pages/CurrentCargos';
+
+import CargosPage from './pages/CargosPage';
+import TransitsPage from './pages/TransitsPage';
 
 import { mockCargos } from './mock';
 
@@ -15,19 +17,51 @@ export type cargoType = {
     name: string;
     category: string;
     quantity: number;
+    status: string;
+    destination?: string;
 };
 
 function App() {
     const [cargos, setCargos] = useState<cargoType[]>([...mockCargos]);
+    const [selectedCargo, setSelectedCargo] = useState<{ [key: string]: any }>({
+        category: '',
+        id: 0,
+        name: '',
+        quantity: 0,
+        status: '',
+        destination: '',
+    });
+
+    const [rowsInTransit, setRowsInTransit] = useState<
+        { [key: string]: any }[]
+    >([]);
 
     return (
         <div className={styles.appContainer}>
             <Sidebar />
             <Routes>
                 <Route
-                    path="/cargos"
+                    path="/"
                     element={
-                        <CurrentCargos cargos={cargos} setCargos={setCargos} />
+                        <CargosPage
+                            cargos={cargos}
+                            setCargos={setCargos}
+                            selectedCargo={selectedCargo}
+                            setSelectedCargo={setSelectedCargo}
+                            rowsInTransit={rowsInTransit}
+                            setRowsInTransit={setRowsInTransit}
+                        />
+                    }
+                />
+                <Route
+                    path="/transits"
+                    element={
+                        <TransitsPage
+                            selectedCargo={selectedCargo}
+                            setSelectedCargo={setSelectedCargo}
+                            rowsInTransit={rowsInTransit}
+                            setRowsInTransit={setRowsInTransit}
+                        />
                     }
                 />
             </Routes>

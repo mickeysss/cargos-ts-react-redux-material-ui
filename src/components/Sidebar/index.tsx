@@ -14,8 +14,13 @@ const Sidebar = () => {
 
             <ul className={styles.navbar}>
                 <li>
-                    <NavLink to="/cargos">
+                    <NavLink to="/">
                         <span>Current Cargos</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/transits">
+                        <span>Transits</span>
                     </NavLink>
                 </li>
             </ul>

@@ -1,5 +1,6 @@
 import Sidebar from './Sidebar';
-import TableComponent from './TableComponent';
-import ModalComponent from './ModalComponent';
+import CargoTable from './CargoTable';
+import AddCargo from './AddCargo';
+import AddTransit from './AddTransit';
 
-export { Sidebar, TableComponent, ModalComponent };
+export { Sidebar, CargoTable, AddCargo, AddTransit };

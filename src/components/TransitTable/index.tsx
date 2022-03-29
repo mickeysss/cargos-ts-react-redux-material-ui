@@ -1,14 +1,10 @@
-import * as React from 'react';
-
-import { cargoType } from '../../App';
-
+import React from 'react';
+import { ThemeProvider } from '@emotion/react';
 import {
     DataGrid,
     GridColumns,
     GridPreProcessEditCellProps,
 } from '@mui/x-data-grid';
-
-import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
 
 const theme = createTheme({
@@ -18,18 +14,19 @@ const theme = createTheme({
 });
 
 type Props = {
-    cargos: cargoType[];
+    selectedCargo: { [key: string]: any };
+    rowsInTransit: { [key: string]: any }[];
 };
 
-const TableComponent = ({ cargos }: Props) => {
+const TransitTable = ({ rowsInTransit }: Props) => {
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
             <ThemeProvider theme={theme}>
                 <DataGrid
-                    rows={cargos}
+                    rows={rowsInTransit}
                     columns={columns}
-                    showColumnRightBorder={true}
                     experimentalFeatures={{ newEditingApi: true }}
+                    onRowClick={(e: any) => console.log(e.row)}
                 />
             </ThemeProvider>
         </div>
@@ -37,6 +34,26 @@ const TableComponent = ({ cargos }: Props) => {
 };
 
 const columns: GridColumns = [
+    {
+        field: 'destination',
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+            const hasError = params.props.value.length < 3;
+            return { ...params.props, error: hasError };
+        },
+        headerName: 'Destination',
+        width: 200,
+        editable: true,
+        align: 'left',
+        headerAlign: 'left',
+    },
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 200,
+        type: 'string',
+        align: 'left',
+        headerAlign: 'left',
+    },
     {
         field: 'name',
         preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -77,4 +94,4 @@ const columns: GridColumns = [
     },
 ];
 
-export default TableComponent;
+export default TransitTable;
