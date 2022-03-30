@@ -10,10 +10,10 @@ import Button from '@mui/material/Button';
 type Props = {
     cargos: cargoType[];
     setCargos: Dispatch<React.SetStateAction<cargoType[]>>;
-    selectedCargo: { [key: string]: any };
-    rowsInTransit: { [key: string]: any }[];
-    setSelectedCargo: Dispatch<React.SetStateAction<{ [key: string]: any }>>;
-    setRowsInTransit: Dispatch<React.SetStateAction<{ [key: string]: any }[]>>;
+    selectedCargo: cargoType;
+    rowsInTransit: cargoType[];
+    setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
+    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
 };
 
 const CargosPage = ({
@@ -39,7 +39,7 @@ const CargosPage = ({
 
     return (
         <div className={styles.flexContainer}>
-            <h2 className={styles.title}>Current cargos</h2>
+            <h2 className={styles.title}>Cargos</h2>
             <div className={styles.cargosList}>
                 <CargoTable
                     setSelectedCargo={setSelectedCargo}

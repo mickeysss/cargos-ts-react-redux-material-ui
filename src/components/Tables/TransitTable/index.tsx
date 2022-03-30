@@ -6,6 +6,8 @@ import {
     GridPreProcessEditCellProps,
 } from '@mui/x-data-grid';
 import { createTheme } from '@mui/material';
+import { cargoType } from '../../../App';
+import { useStyles } from '../../../hooks/useStyles';
 
 const theme = createTheme({
     palette: {
@@ -14,11 +16,13 @@ const theme = createTheme({
 });
 
 type Props = {
-    selectedCargo: { [key: string]: any };
-    rowsInTransit: { [key: string]: any }[];
+    selectedCargo: cargoType;
+    rowsInTransit: cargoType[];
 };
 
 const TransitTable = ({ rowsInTransit }: Props) => {
+    const classes = useStyles();
+
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
             <ThemeProvider theme={theme}>
@@ -26,7 +30,8 @@ const TransitTable = ({ rowsInTransit }: Props) => {
                     rows={rowsInTransit}
                     columns={columns}
                     experimentalFeatures={{ newEditingApi: true }}
-                    onRowClick={(e: any) => console.log(e.row)}
+                    onRowClick={(e) => console.log(e.row)}
+                    classes={classes}
                 />
             </ThemeProvider>
         </div>
@@ -34,6 +39,14 @@ const TransitTable = ({ rowsInTransit }: Props) => {
 };
 
 const columns: GridColumns = [
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 200,
+        type: 'string',
+        align: 'left',
+        headerAlign: 'left',
+    },
     {
         field: 'destination',
         preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -43,14 +56,6 @@ const columns: GridColumns = [
         headerName: 'Destination',
         width: 200,
         editable: true,
-        align: 'left',
-        headerAlign: 'left',
-    },
-    {
-        field: 'status',
-        headerName: 'Status',
-        width: 200,
-        type: 'string',
         align: 'left',
         headerAlign: 'left',
     },

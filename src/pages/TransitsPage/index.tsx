@@ -1,14 +1,15 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
-import TransitTable from '../../components/TransitTable';
+import TransitTable from '../../components/Tables/TransitTable';
 
 import styles from '../CargosPage/styles.module.scss';
+import { cargoType } from '../../App';
 
 type Props = {
-    selectedCargo: { [key: string]: any };
-    setSelectedCargo: Dispatch<{ [key: string]: any }>;
-    rowsInTransit: { [key: string]: any }[];
-    setRowsInTransit: Dispatch<{ [key: string]: any }[]>;
+    selectedCargo: cargoType;
+    setSelectedCargo: Dispatch<SetStateAction<cargoType>>;
+    rowsInTransit: cargoType[];
+    setRowsInTransit: Dispatch<SetStateAction<cargoType[]>>;
 };
 
 const TransitsPage = ({ selectedCargo, rowsInTransit }: Props) => {
