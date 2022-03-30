@@ -13,12 +13,12 @@ const Sidebar = () => {
             </div>
 
             <ul className={styles.navbar}>
-                <li>
+                <li className={styles.navItem}>
                     <NavLink to="/">
-                        <span>Current Cargos</span>
+                        <span>Cargos</span>
                     </NavLink>
                 </li>
-                <li>
+                <li className={styles.navItem}>
                     <NavLink to="/transits">
                         <span>Transits</span>
                     </NavLink>

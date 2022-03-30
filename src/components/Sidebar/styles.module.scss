@@ -3,14 +3,16 @@
   background: #100003;
   height: 100vh;
   width: 15vw;
+  min-width: 200px;
   padding: 20px;
   border-right: 2px solid white;
 
   h1{
+    text-align: center;
     text-transform: uppercase;
     font-size: 20px;
     font-style: italic;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
   }
 }
 
@@ -33,13 +35,18 @@
 }
 
 .logoContainer{
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
-  border-bottom: 2px dashed black;
+  border-bottom: 4px dashed grey;
   :nth-child(2){
     margin-left: 5px;
   }
+}
+.navbar{
+  :nth-child(1){
+    margin-bottom: 30px;
+  }
+}
+.navItem{
+  font-size: 20px;
+
 }
