@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 
-import { cargoType } from '../../App';
+import { cargoType } from '../../../App';
 
 import { Input, InputLabel } from '@mui/material';
 

@@ -2,15 +2,17 @@ import * as React from 'react';
 
 import { Dispatch } from 'react';
 
-import { cargoType } from '../../App';
+import { cargoType } from '../../../App';
 import {
     DataGrid,
     GridColumns,
     GridPreProcessEditCellProps,
+    GridRowParams,
 } from '@mui/x-data-grid';
 
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
+import { useStyles } from '../../../hooks/useStyles';
 
 const theme = createTheme({
     palette: {
@@ -20,13 +22,14 @@ const theme = createTheme({
 
 type Props = {
     cargos: cargoType[];
-    setSelectedCargo: Dispatch<React.SetStateAction<{ [key: string]: any }>>;
+    setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
 };
 
 const CargoTable = ({ cargos, setSelectedCargo }: Props) => {
-    const selectedCargoHandler = (e: {
-        row: React.SetStateAction<{ [key: string]: any }>;
-    }) => setSelectedCargo(e.row);
+    const classes = useStyles();
+
+    const selectedCargoHandler = (e: GridRowParams) =>
+        setSelectedCargo(e.row as cargoType);
 
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
@@ -35,7 +38,8 @@ const CargoTable = ({ cargos, setSelectedCargo }: Props) => {
                     rows={cargos}
                     columns={columns}
                     experimentalFeatures={{ newEditingApi: true }}
-                    onRowClick={(e: any) => selectedCargoHandler(e)}
+                    onRowClick={(e) => selectedCargoHandler(e)}
+                    classes={classes}
                 />
             </ThemeProvider>
         </div>
@@ -43,6 +47,14 @@ const CargoTable = ({ cargos, setSelectedCargo }: Props) => {
 };
 
 const columns: GridColumns = [
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 300,
+        type: 'string',
+        align: 'left',
+        headerAlign: 'left',
+    },
     {
         field: 'name',
         preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -78,14 +90,6 @@ const columns: GridColumns = [
         width: 300,
         type: 'number',
         editable: true,
-        align: 'left',
-        headerAlign: 'left',
-    },
-    {
-        field: 'status',
-        headerName: 'Status',
-        width: 300,
-        type: 'string',
         align: 'left',
         headerAlign: 'left',
     },
