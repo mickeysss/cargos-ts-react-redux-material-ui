@@ -35,6 +35,7 @@
 }
 
 .logoContainer{
+  overflow: hidden;
   align-items: center;
   border-bottom: 4px dashed grey;
   :nth-child(2){
@@ -48,5 +49,20 @@
 }
 .navItem{
   font-size: 20px;
+}
 
+
+.icon{
+  animation:spin 5s linear infinite;
+  svg {
+    position: relative;
+    bottom: -5px;
+
+  }
+
+
+  @keyframes spin {
+    0% { -webkit-transform: translateX(-10%); }
+    100% { -webkit-transform: translateX(110%); transform: translateX(110%); }
+  }
 }

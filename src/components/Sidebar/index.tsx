@@ -9,13 +9,15 @@ const Sidebar = () => {
         <div className={styles.sidebar}>
             <div className={styles.logoContainer}>
                 <h1>Justice Cargos</h1>
-                <LocalShippingIcon />
+                <div className={styles.icon}>
+                    <LocalShippingIcon />
+                </div>
             </div>
 
             <ul className={styles.navbar}>
                 <li className={styles.navItem}>
                     <NavLink to="/">
-                        <span>Cargos</span>
+                    <span className={styles.icon}>Cargos</span>
                     </NavLink>
                 </li>
                 <li className={styles.navItem}>
