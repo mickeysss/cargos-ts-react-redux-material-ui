@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import {
     DataGrid,
@@ -18,9 +18,10 @@ const theme = createTheme({
 type Props = {
     selectedCargo: cargoType;
     rowsInTransit: cargoType[];
+    setCompletedCargo: Dispatch<React.SetStateAction<cargoType>>;
 };
 
-const TransitTable = ({ rowsInTransit }: Props) => {
+const TransitTable = ({ rowsInTransit,setCompletedCargo }: Props) => {
     const classes = useStyles();
 
     return (
@@ -30,7 +31,7 @@ const TransitTable = ({ rowsInTransit }: Props) => {
                     rows={rowsInTransit}
                     columns={columns}
                     experimentalFeatures={{ newEditingApi: true }}
-                    onRowClick={(e) => console.log(e.row)}
+                    onRowClick={(e) => setCompletedCargo(e.row as cargoType)}
                     classes={classes}
                 />
             </ThemeProvider>
