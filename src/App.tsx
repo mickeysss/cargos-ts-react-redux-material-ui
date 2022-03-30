@@ -23,7 +23,7 @@ export type cargoType = {
 
 function App() {
     const [cargos, setCargos] = useState<cargoType[]>([...mockCargos]);
-    const [selectedCargo, setSelectedCargo] = useState<{ [key: string]: any }>({
+    const [selectedCargo, setSelectedCargo] = useState<cargoType>({
         category: '',
         id: 0,
         name: '',
@@ -32,9 +32,7 @@ function App() {
         destination: '',
     });
 
-    const [rowsInTransit, setRowsInTransit] = useState<
-        { [key: string]: any }[]
-    >([]);
+    const [rowsInTransit, setRowsInTransit] = useState<cargoType[]>([]);
 
     return (
         <div className={styles.appContainer}>
