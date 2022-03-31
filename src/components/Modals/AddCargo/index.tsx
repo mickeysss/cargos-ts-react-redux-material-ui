@@ -49,7 +49,8 @@ const AddCargo = ({ cargos, setCargos }: Props) => {
         if (newCargo.category && newCargo.name && newCargo.quantity) {
             setCargos([...cargos, newCargo]);
             setOpen(false);
-        } else return;
+            localStorage.setItem('cargos',JSON.stringify([...cargos, newCargo]))
+        }
     };
 
     return (

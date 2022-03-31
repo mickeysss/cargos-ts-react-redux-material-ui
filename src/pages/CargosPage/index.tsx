@@ -25,7 +25,8 @@ const CargosPage = ({
     rowsInTransit,
 }: Props) => {
     const removeHandler = () => {
-        setCargos(cargos.filter((cargo) => cargo !== selectedCargo));
+
+        localStorage.setItem('cargos', JSON.stringify(cargos.filter((cargo) => cargo !== selectedCargo)))
 
         setSelectedCargo({
             category: '',
@@ -36,7 +37,6 @@ const CargosPage = ({
             destination: '',
         });
     };
-
     return (
         <div className={styles.flexContainer}>
             <h2 className={styles.title}>Cargos</h2>

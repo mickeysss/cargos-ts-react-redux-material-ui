@@ -21,8 +21,10 @@ export type cargoType = {
     destination?: string;
 };
 
-function App() {
-    const [cargos, setCargos] = useState<cargoType[]>([...mockCargos]);
+const App = () => {
+    const [cargos, setCargos] =
+        useState<cargoType[]>(JSON.parse(localStorage.getItem('cargos') as string) || [...mockCargos]);
+
     const [selectedCargo, setSelectedCargo] = useState<cargoType>({
         category: '',
         id: 0,
@@ -32,8 +34,8 @@ function App() {
         destination: '',
     });
 
-    const [rowsInTransit, setRowsInTransit] = useState<cargoType[]>([]);
-
+    const [rowsInTransit, setRowsInTransit] =
+        useState<cargoType[]>(JSON.parse(localStorage.getItem('transits') as string) || []);
     return (
         <div className={styles.appContainer}>
             <Sidebar />
