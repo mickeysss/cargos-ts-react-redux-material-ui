@@ -73,6 +73,7 @@ const AddTransit = ({
 
             setOpen(false);
         }
+        localStorage.setItem('transits', JSON.stringify([...rowsInTransit, selectedCargo]))
     };
 
     const onOpenModalHandler = () => {

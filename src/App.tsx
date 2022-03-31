@@ -7,11 +7,10 @@ import { Sidebar } from './components';
 import CargosPage from './pages/CargosPage';
 import TransitsPage from './pages/TransitsPage';
 
+import { mockCargos } from './mock';
+
 import './assets/styles/_global.scss';
 import styles from './styles.module.scss';
-import { useSelector } from 'react-redux';
-import { AppRootStateType } from './store/reducers';
-import CompletedPage from './pages/CompletedPage';
 
 export type cargoType = {
     id: number;
@@ -22,12 +21,10 @@ export type cargoType = {
     destination?: string;
 };
 
-function App() {
-    const cargosState = useSelector<AppRootStateType, cargoType[]>(
-        (state) => state.cargos
-    );
+const App = () => {
+    const [cargos, setCargos] =
+        useState<cargoType[]>(JSON.parse(localStorage.getItem('cargos') as string) || [...mockCargos]);
 
-    const [cargos, setCargos] = useState<cargoType[]>(cargosState);
     const [selectedCargo, setSelectedCargo] = useState<cargoType>({
         category: '',
         id: 0,
@@ -37,8 +34,8 @@ function App() {
         destination: '',
     });
 
-    const [rowsInTransit, setRowsInTransit] = useState<cargoType[]>([]);
-
+    const [rowsInTransit, setRowsInTransit] =
+        useState<cargoType[]>(JSON.parse(localStorage.getItem('transits') as string) || []);
     return (
         <div className={styles.appContainer}>
             <Sidebar />
@@ -60,7 +57,6 @@ function App() {
                     path="/transits"
                     element={
                         <TransitsPage
-                            setRows={setCargos}
                             selectedCargo={selectedCargo}
                             setSelectedCargo={setSelectedCargo}
                             rowsInTransit={rowsInTransit}
@@ -68,7 +64,6 @@ function App() {
                         />
                     }
                 />
-                <Route path="/completed" element={<CompletedPage />} />
             </Routes>
         </div>
     );
