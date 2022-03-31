@@ -7,10 +7,11 @@ import { Sidebar } from './components';
 import CargosPage from './pages/CargosPage';
 import TransitsPage from './pages/TransitsPage';
 
-import { mockCargos } from './mock';
-
 import './assets/styles/_global.scss';
 import styles from './styles.module.scss';
+import { useSelector } from 'react-redux';
+import { AppRootStateType } from './store/reducers';
+import CompletedPage from './pages/CompletedPage';
 
 export type cargoType = {
     id: number;
@@ -22,7 +23,11 @@ export type cargoType = {
 };
 
 function App() {
-    const [cargos, setCargos] = useState<cargoType[]>([...mockCargos]);
+    const cargosState = useSelector<AppRootStateType, cargoType[]>(
+        (state) => state.cargos
+    );
+
+    const [cargos, setCargos] = useState<cargoType[]>(cargosState);
     const [selectedCargo, setSelectedCargo] = useState<cargoType>({
         category: '',
         id: 0,
@@ -55,6 +60,7 @@ function App() {
                     path="/transits"
                     element={
                         <TransitsPage
+                            setRows={setCargos}
                             selectedCargo={selectedCargo}
                             setSelectedCargo={setSelectedCargo}
                             rowsInTransit={rowsInTransit}
@@ -62,6 +68,7 @@ function App() {
                         />
                     }
                 />
+                <Route path="/completed" element={<CompletedPage />} />
             </Routes>
         </div>
     );
