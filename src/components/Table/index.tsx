@@ -1,9 +1,19 @@
-import React, { Dispatch, useEffect } from 'react';
-import { ThemeProvider } from '@emotion/react';
-import { DataGrid, GridColumns } from '@mui/x-data-grid';
-import { createTheme } from '@mui/material';
-import { cargoType } from '../../App';
+import React, { Dispatch } from 'react';
+
 import { useStyles } from '../../hooks/useStyles';
+
+import { ThemeProvider } from '@emotion/react';
+
+import { cargoType } from '../../App';
+
+import {
+    DataGrid,
+    GridColumns,
+    GridRowModel,
+    GridRowParams,
+} from '@mui/x-data-grid';
+
+import { createTheme } from '@mui/material';
 
 const theme = createTheme({
     palette: {
@@ -15,14 +25,24 @@ type Props = {
     rows: cargoType[];
     columns: GridColumns;
     setSelectedRow: Dispatch<React.SetStateAction<cargoType>>;
+    setError: Dispatch<React.SetStateAction<string>>;
 };
 
-const Table = ({ rows, columns, selectedRow, setSelectedRow }: Props) => {
+const Table = ({
+    rows,
+    columns,
+    selectedRow,
+    setSelectedRow,
+    setError,
+}: Props) => {
     const classes = useStyles();
 
-    useEffect(() => {
-        return localStorage.setItem('cargos-list', JSON.stringify(rows));
-    }, [rows]);
+    const onRowClickHandler = (e: GridRowParams<GridRowModel>) => {
+        setError('');
+        if (selectedRow) {
+            setSelectedRow(e.row as cargoType);
+        } else return null;
+    };
 
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
@@ -31,9 +51,7 @@ const Table = ({ rows, columns, selectedRow, setSelectedRow }: Props) => {
                     rows={rows}
                     columns={columns}
                     experimentalFeatures={{ newEditingApi: true }}
-                    onRowClick={(e) =>
-                        selectedRow ? setSelectedRow(e.row as cargoType) : null
-                    }
+                    onRowClick={(e) => onRowClickHandler(e)}
                     classes={classes}
                 />
             </ThemeProvider>

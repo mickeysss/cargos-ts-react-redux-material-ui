@@ -25,12 +25,16 @@ export type cargoType = {
 };
 
 const App = () => {
+    const localStore = JSON.parse(localStorage.getItem('cargos') as string);
+
+    const [error, setError] = useState('');
+
     const cargosInitial = useSelector<AppRootStateType, cargoType[]>(
         (state) => state.cargos
     );
 
     const [cargos, setCargos] = useState<cargoType[]>(
-        JSON.parse(localStorage.getItem('cargos') as string) || cargosInitial
+        localStore || cargosInitial
     );
 
     const [selectedCargo, setSelectedCargo] = useState<cargoType>({
@@ -46,6 +50,7 @@ const App = () => {
     const [rowsInTransit, setRowsInTransit] = useState<cargoType[]>(
         JSON.parse(localStorage.getItem('transits') as string) || []
     );
+
     return (
         <div className={styles.appContainer}>
             <Sidebar />
@@ -55,6 +60,8 @@ const App = () => {
                         path="/"
                         element={
                             <CargosPage
+                                error={error}
+                                setError={setError}
                                 cargos={cargos}
                                 setCargos={setCargos}
                                 selectedCargo={selectedCargo}
@@ -68,6 +75,8 @@ const App = () => {
                         path="/transits"
                         element={
                             <TransitsPage
+                                error={error}
+                                setError={setError}
                                 selectedCargo={selectedCargo}
                                 setSelectedCargo={setSelectedCargo}
                                 rowsInTransit={rowsInTransit}
