@@ -1,10 +1,18 @@
 import * as React from 'react';
-import { Dispatch } from 'react';
+import { ChangeEvent, Dispatch } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { Input, InputLabel } from '@mui/material';
+import {
+    FormControl,
+    Input,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+} from '@mui/material';
+import { cargoType } from '../../../App';
 
 const style = {
     position: 'absolute' as const,
@@ -19,14 +27,10 @@ const style = {
 };
 
 type Props = {
-    selectedCargo: { [key: string]: string | number };
-    setSelectedCargo: Dispatch<
-        React.SetStateAction<{ [key: string]: string | number }>
-    >;
-    rowsInTransit: { [key: string]: string | number }[];
-    setRowsInTransit: Dispatch<
-        React.SetStateAction<{ [key: string]: string | number }[]>
-    >;
+    selectedCargo: cargoType;
+    setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
+    rowsInTransit: cargoType[];
+    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
 };
 
 const AddTransit = ({
@@ -36,9 +40,10 @@ const AddTransit = ({
     setRowsInTransit,
 }: Props) => {
     const [open, setOpen] = React.useState(false);
-
     const selectedCargoHandler = (
-        e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+        e:
+            | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            | SelectChangeEvent
     ) => {
         const { name, value } = e.target;
 
@@ -47,6 +52,7 @@ const AddTransit = ({
             id: Date.now(),
             [name]: value,
             status: 'In transit',
+            attention: '-',
         });
     };
 
@@ -64,12 +70,15 @@ const AddTransit = ({
                 quantity: 0,
                 status: '',
                 destination: '',
+                attention: '',
             });
 
             setOpen(false);
-        } else {
-            return false;
         }
+        localStorage.setItem(
+            'transits',
+            JSON.stringify([...rowsInTransit, selectedCargo])
+        );
     };
 
     const onOpenModalHandler = () => {
@@ -85,6 +94,11 @@ const AddTransit = ({
         setOpen(false);
     };
 
+    const inputFieldStyles = {
+        marginBottom: '20px',
+    };
+
+    console.log(selectedCargo);
     return (
         <div>
             <Button onClick={onOpenModalHandler}>Add new transit</Button>
@@ -101,6 +115,7 @@ const AddTransit = ({
                         type="string"
                         value={selectedCargo.name}
                         readOnly={true}
+                        style={inputFieldStyles}
                     />
                     <InputLabel htmlFor="category">Category</InputLabel>
                     <Input
@@ -108,23 +123,35 @@ const AddTransit = ({
                         type="string"
                         defaultValue={selectedCargo.category}
                         readOnly={true}
+                        style={inputFieldStyles}
                     />
                     <InputLabel htmlFor="quantity">Choose quantity</InputLabel>
                     <Input
                         name="quantity"
                         type="number"
                         onChange={(e) => selectedCargoHandler(e)}
-                        maxRows={selectedCargo.quantity}
-                        // defaultValue={selectedCargo.quantity}
+                        style={inputFieldStyles}
                     />
-                    <InputLabel htmlFor="destination">
-                        Choose transit place
-                    </InputLabel>
-                    <Input
-                        name="destination"
-                        type="string"
-                        onChange={(e) => selectedCargoHandler(e)}
-                    />
+                    <FormControl fullWidth>
+                        <InputLabel id="destination">
+                            Choose destination
+                        </InputLabel>
+                        <Select
+                            labelId="destination"
+                            id="destination"
+                            name="destination"
+                            label="Choose department"
+                            onChange={(e: SelectChangeEvent) =>
+                                selectedCargoHandler(e)
+                            }
+                            defaultValue=""
+                            style={inputFieldStyles}
+                        >
+                            <MenuItem value="Krasnodar">Krasnodar</MenuItem>
+                            <MenuItem value="Moscow">Moscow</MenuItem>
+                            <MenuItem value="Rostov">Rostov</MenuItem>
+                        </Select>
+                    </FormControl>
                     <div style={{ margin: '20px 0 0 0' }}>
                         <Button onClick={addTransitHandler} variant="outlined">
                             Add transit

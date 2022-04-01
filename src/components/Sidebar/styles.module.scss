@@ -1,21 +1,25 @@
 .sidebar{
   color: white;
-  background: #100003;
+  background: #151414;
   height: 100vh;
-  width: 15vw;
-  padding: 20px;
-  border-right: 2px solid white;
+  width: 10vw;
+  min-width: 150px;
+  border-right: 1px dotted rgba(255,255,224,0.1);
 
   h1{
+    padding: 20px;
+
+    text-align: center;
     text-transform: uppercase;
     font-size: 20px;
     font-style: italic;
-    margin-bottom: 5px;
   }
 }
 
 .navbar{
-  margin-top: 50px;
+  padding: 20px;
+
+  margin-top: 20px;
   li{
     color: white;
     list-style: none;
@@ -33,13 +37,59 @@
 }
 
 .logoContainer{
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;
   align-items: center;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
-  border-bottom: 2px dashed black;
-  :nth-child(2){
-    margin-left: 5px;
+
+}
+
+.road{
+  overflow: hidden;
+  background: #424141;
+}
+.line{
+  display: flex;
+  height: 2px;
+  width: 100%;
+  background: #424141;
+  border-bottom: 7px dashed yellow;
+}
+.navbar{
+  :not(:last-child){
+    margin-bottom: 30px;
   }
+}
+.navItem{
+  font-size: 20px;
+}
+
+.icon2{
+  animation: spin2 15s linear infinite;
+  svg {
+    transform: scale(-1, 1);
+    position: relative;
+    bottom: -3px;
+
+  }
+}
+
+@keyframes spin2 {
+
+  0% { -webkit-transform: translateX(120%);
+  }
+  100% { -webkit-transform: translateX(-20%); transform: translateX(-20%); }
+}
+.icon{
+  animation: spin 12s linear infinite;
+
+  svg {
+    position: relative;
+    bottom: -2px;
+
+  }
+
+  @keyframes spin {
+    0% { -webkit-transform: translateX(-20%); }
+    100% { -webkit-transform: translateX(120%); transform: translateX(120%); }
+  }
+
 }

@@ -1,20 +1,72 @@
 import React, { Dispatch } from 'react';
 
-import { CargoTable, AddCargo, AddTransit } from '../../components';
+import { AddCargo, AddTransit } from '../../components';
+
+import Button from '@mui/material/Button';
 
 import { cargoType } from '../../App';
 
 import styles from './styles.module.scss';
-import Button from '@mui/material/Button';
+import Table from '../../components/Table';
+import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
 
 type Props = {
     cargos: cargoType[];
     setCargos: Dispatch<React.SetStateAction<cargoType[]>>;
-    selectedCargo: { [key: string]: any };
-    rowsInTransit: { [key: string]: any }[];
-    setSelectedCargo: Dispatch<React.SetStateAction<{ [key: string]: any }>>;
-    setRowsInTransit: Dispatch<React.SetStateAction<{ [key: string]: any }[]>>;
+    selectedCargo: cargoType;
+    rowsInTransit: cargoType[];
+    setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
+    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
 };
+
+const columns: GridColumns = [
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 300,
+        type: 'string',
+        align: 'left',
+        headerAlign: 'left',
+    },
+    {
+        field: 'name',
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+            const hasError = params.props.value.length < 3;
+            return { ...params.props, error: hasError };
+        },
+        headerName: 'Name',
+        width: 300,
+        editable: true,
+        align: 'left',
+        headerAlign: 'left',
+    },
+    {
+        field: 'category',
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+            const hasError = params.props.value.length < 3;
+            return { ...params.props, error: hasError };
+        },
+        headerName: 'Category',
+        width: 300,
+        type: 'string',
+        editable: true,
+        align: 'left',
+        headerAlign: 'left',
+    },
+    {
+        field: 'quantity',
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+            const hasError = params.props.value < 0;
+            return { ...params.props, error: hasError };
+        },
+        headerName: 'Quantity',
+        width: 300,
+        type: 'number',
+        editable: true,
+        align: 'left',
+        headerAlign: 'left',
+    },
+];
 
 const CargosPage = ({
     cargos,
@@ -25,7 +77,10 @@ const CargosPage = ({
     rowsInTransit,
 }: Props) => {
     const removeHandler = () => {
-        setCargos(cargos.filter((cargo) => cargo !== selectedCargo));
+        localStorage.setItem(
+            'cargos',
+            JSON.stringify(cargos.filter((cargo) => cargo !== selectedCargo))
+        );
 
         setSelectedCargo({
             category: '',
@@ -36,14 +91,15 @@ const CargosPage = ({
             destination: '',
         });
     };
-
     return (
         <div className={styles.flexContainer}>
-            <h2 className={styles.title}>Current cargos</h2>
+            <h2 className={styles.title}>Cargos</h2>
             <div className={styles.cargosList}>
-                <CargoTable
-                    setSelectedCargo={setSelectedCargo}
-                    cargos={cargos}
+                <Table
+                    selectedRow={selectedCargo}
+                    rows={cargos}
+                    setSelectedRow={setSelectedCargo}
+                    columns={columns}
                 />
             </div>
             <div className={styles.buttonsContainer}>
