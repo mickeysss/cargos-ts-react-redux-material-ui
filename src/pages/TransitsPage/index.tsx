@@ -25,7 +25,6 @@ const columns: GridColumns = [
         },
         headerName: 'Destination',
         width: 200,
-        editable: true,
         align: 'left',
         headerAlign: 'left',
     },
@@ -37,7 +36,6 @@ const columns: GridColumns = [
         },
         headerName: 'Name',
         width: 200,
-        editable: true,
         align: 'left',
         headerAlign: 'left',
     },
@@ -50,7 +48,6 @@ const columns: GridColumns = [
         headerName: 'Category',
         width: 200,
         type: 'string',
-        editable: true,
         align: 'left',
         headerAlign: 'left',
     },
@@ -63,14 +60,24 @@ const columns: GridColumns = [
         headerName: 'Quantity',
         width: 200,
         type: 'number',
-        editable: true,
+        align: 'left',
+        headerAlign: 'left',
+    },
+    {
+        field: 'attention',
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+            const hasError = params.props.value < 0;
+            return { ...params.props, error: hasError };
+        },
+        headerName: 'Attention',
+        width: 200,
+        type: 'number',
         align: 'left',
         headerAlign: 'left',
     },
 ];
 
 type Props = {
-    setRows: Dispatch<SetStateAction<cargoType[]>>;
     selectedCargo: cargoType;
     setSelectedCargo: Dispatch<SetStateAction<cargoType>>;
     rowsInTransit: cargoType[];
@@ -90,8 +97,9 @@ const TransitsPage = ({
         quantity: 0,
         status: '',
         destination: '',
+        attention: '',
     });
-    console.log(rowsInTransit);
+
     return (
         <div className={styles.flexContainer}>
             <h2 className={styles.title}>All transits</h2>
