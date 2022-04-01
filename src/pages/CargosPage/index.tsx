@@ -77,8 +77,10 @@ const CargosPage = ({
     rowsInTransit,
 }: Props) => {
     const removeHandler = () => {
-
-        localStorage.setItem('cargos', JSON.stringify(cargos.filter((cargo) => cargo !== selectedCargo)))
+        localStorage.setItem(
+            'cargos',
+            JSON.stringify(cargos.filter((cargo) => cargo !== selectedCargo))
+        );
 
         setSelectedCargo({
             category: '',
