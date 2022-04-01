@@ -4,11 +4,11 @@ import { Dispatch } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import {
-    Input,
-    InputLabel,
-} from '@mui/material';
+import { Input, InputLabel } from '@mui/material';
+
 import { cargoType } from '../../../App';
+
+import styles from './styles.modules.scss';
 
 const style = {
     position: 'absolute' as const,
@@ -28,35 +28,69 @@ type Props = {
     rowsInTransit: cargoType[];
     setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
     setCompletedCargo: Dispatch<React.SetStateAction<cargoType>>;
-    completedCargo: cargoType
+    completedCargo: cargoType;
+};
+
+const inputFieldStyles = {
+    marginBottom: '20px',
 };
 
 const AddCompleted = ({
     completedCargo,
-    selectedCargo,
+    setCompletedCargo,
+    setRowsInTransit,
+    rowsInTransit,
 }: Props) => {
     const [open, setOpen] = React.useState(false);
 
+    const onChangeHandler = (
+        e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    ) => {
+        const { name, value } = e.target;
+
+        setCompletedCargo({ ...completedCargo, [name]: value });
+    };
 
     const onOpenCompletedHandler = () => {
+        if (
+            completedCargo.category &&
+            completedCargo.name &&
+            completedCargo.quantity
+        ) {
             setOpen(true);
+        }
     };
 
     const onCloseCompletedHandler = () => {
         setOpen(false);
     };
 
-    const inputFieldStyles = {
-        marginBottom: '20px',
-    };
+    const completeHandler = () => {
+        const complete = rowsInTransit.map((row) => {
+            console.log('rowCargo', row.quantity);
+            console.log('completedCargo', completedCargo.quantity);
 
-    console.log(selectedCargo);
-    console.log('====>completedCargo<====', completedCargo)
+            if (row.id === completedCargo.id) {
+                if (row.quantity !== completedCargo.quantity) {
+                    row.status = 'None fully completed';
+                    row.attention = String(
+                        +row.quantity - +completedCargo.quantity
+                    );
+                }
+                if (row.quantity === completedCargo.quantity) {
+                    row.status = 'Completed';
+                    row.attention = 'None problems';
+                }
+            }
+
+            return row;
+        });
+        setRowsInTransit(complete);
+        onCloseCompletedHandler();
+    };
     return (
         <div>
-            <Button
-                onClick={onOpenCompletedHandler}
-            >Complete transit</Button>
+            <Button onClick={onOpenCompletedHandler}>Complete transit</Button>
             <Modal
                 onClose={onCloseCompletedHandler}
                 aria-labelledby="modal-modal-title"
@@ -64,22 +98,31 @@ const AddCompleted = ({
                 open={open}
             >
                 <Box sx={style}>
-                    <h1>From stock to destination point</h1>
-                    <InputLabel htmlFor="name">Destination</InputLabel>
+                    <h2 style={{ marginBottom: '30px' }}>
+                        Confirm cargo transit
+                    </h2>
+
+                    <InputLabel className={styles.textField} htmlFor="name">
+                        Destination
+                    </InputLabel>
                     <Input
                         name="name"
                         type="string"
                         value={completedCargo.destination}
                         readOnly={true}
+                        className={styles.textField}
                         style={inputFieldStyles}
                     />
-                    <InputLabel htmlFor="name">Name</InputLabel>
+                    <InputLabel className={styles.textField} htmlFor="name">
+                        Name
+                    </InputLabel>
                     <Input
                         name="name"
                         type="string"
                         value={completedCargo.name}
                         readOnly={true}
                         style={inputFieldStyles}
+                        className={styles.textField}
                     />
                     <InputLabel htmlFor="category">Category</InputLabel>
                     <Input
@@ -88,18 +131,21 @@ const AddCompleted = ({
                         defaultValue={completedCargo.category}
                         readOnly={true}
                         style={inputFieldStyles}
+                        className={styles.textField}
                     />
-                    <InputLabel htmlFor="quantity">Quantity</InputLabel>
+                    <InputLabel className={styles.textField} htmlFor="quantity">
+                        Confirm quantity
+                    </InputLabel>
                     <Input
                         name="quantity"
                         type="number"
                         style={inputFieldStyles}
                         defaultValue={completedCargo.quantity}
-                        readOnly
+                        onChange={(e) => onChangeHandler(e)}
                     />
-                    <div style={{ margin: '20px 0 0 0' }}>
-                        <Button variant="outlined">
-                            Complete
+                    <div style={{ marginTop: '20px' }}>
+                        <Button onClick={completeHandler} variant="outlined">
+                            Confirm transit
                         </Button>
                     </div>
                 </Box>
