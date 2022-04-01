@@ -33,16 +33,6 @@ const Sidebar = () => {
                         <span>Transits</span>
                     </NavLink>
                 </li>
-                <li className={styles.navItem}>
-                    <NavLink to="/completed">
-                        <span>Completed transits</span>
-                    </NavLink>
-                </li>
-                <li className={styles.navItem}>
-                    <NavLink to="/statistics">
-                        <span>Statistics</span>
-                    </NavLink>
-                </li>
             </ul>
         </div>
     );
