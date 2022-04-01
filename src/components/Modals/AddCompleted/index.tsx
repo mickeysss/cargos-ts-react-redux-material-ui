@@ -94,7 +94,7 @@ const AddCompleted = ({
     };
     return (
         <div>
-            <Button onClick={onOpenCompletedHandler}>Complete transit</Button>
+            <Button onClick={onOpenCompletedHandler}>Confirm transit</Button>
             <Modal
                 onClose={onCloseCompletedHandler}
                 aria-labelledby="modal-modal-title"
