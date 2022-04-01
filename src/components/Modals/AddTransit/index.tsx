@@ -52,6 +52,7 @@ const AddTransit = ({
             id: Date.now(),
             [name]: value,
             status: 'In transit',
+            attention: '-',
         });
     };
 
@@ -69,11 +70,15 @@ const AddTransit = ({
                 quantity: 0,
                 status: '',
                 destination: '',
+                attention: '',
             });
 
             setOpen(false);
         }
-        localStorage.setItem('transits', JSON.stringify([...rowsInTransit, selectedCargo]))
+        localStorage.setItem(
+            'transits',
+            JSON.stringify([...rowsInTransit, selectedCargo])
+        );
     };
 
     const onOpenModalHandler = () => {
