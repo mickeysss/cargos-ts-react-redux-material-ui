@@ -49,7 +49,10 @@ const AddCargo = ({ cargos, setCargos }: Props) => {
         if (newCargo.category && newCargo.name && newCargo.quantity) {
             setCargos([...cargos, newCargo]);
             setOpen(false);
-            localStorage.setItem('cargos',JSON.stringify([...cargos, newCargo]))
+            localStorage.setItem(
+                'cargos',
+                JSON.stringify([...cargos, newCargo])
+            );
         }
     };
 
@@ -83,7 +86,7 @@ const AddCargo = ({ cargos, setCargos }: Props) => {
                         type="number"
                         onChange={(e) => changeCargoHandler(e)}
                     />
-                    <div style={{ margin: '20px 0 0 0' }}>
+                    <div style={{ marginTop: '20px' }}>
                         <Button onClick={addCargoHandler} variant="outlined">
                             Add cargo
                         </Button>
