@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 
 import { Routes, Route } from 'react-router-dom';
 
-import { Sidebar } from './components';
+import { useSelector } from 'react-redux';
 
 import CargosPage from './pages/CargosPage';
 import TransitsPage from './pages/TransitsPage';
 
-import { mockCargos } from './mock';
+import { Sidebar } from './components';
+
+import { AppRootStateType } from './store/reducers';
 
 import './assets/styles/_global.scss';
 import styles from './styles.module.scss';
@@ -19,11 +21,17 @@ export type cargoType = {
     quantity: number;
     status: string;
     destination?: string;
+    attention?: string | number;
 };
 
 const App = () => {
-    const [cargos, setCargos] =
-        useState<cargoType[]>(JSON.parse(localStorage.getItem('cargos') as string) || [...mockCargos]);
+    const cargosInitial = useSelector<AppRootStateType, cargoType[]>(
+        (state) => state.cargos
+    );
+
+    const [cargos, setCargos] = useState<cargoType[]>(
+        JSON.parse(localStorage.getItem('cargos') as string) || cargosInitial
+    );
 
     const [selectedCargo, setSelectedCargo] = useState<cargoType>({
         category: '',
@@ -32,41 +40,45 @@ const App = () => {
         quantity: 0,
         status: '',
         destination: '',
+        attention: '-',
     });
 
-    const [rowsInTransit, setRowsInTransit] =
-        useState<cargoType[]>(JSON.parse(localStorage.getItem('transits') as string) || []);
+    const [rowsInTransit, setRowsInTransit] = useState<cargoType[]>(
+        JSON.parse(localStorage.getItem('transits') as string) || []
+    );
     return (
         <div className={styles.appContainer}>
             <Sidebar />
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <CargosPage
-                            cargos={cargos}
-                            setCargos={setCargos}
-                            selectedCargo={selectedCargo}
-                            setSelectedCargo={setSelectedCargo}
-                            rowsInTransit={rowsInTransit}
-                            setRowsInTransit={setRowsInTransit}
-                        />
-                    }
-                />
-                <Route
-                    path="/transits"
-                    element={
-                        <TransitsPage
-                            selectedCargo={selectedCargo}
-                            setSelectedCargo={setSelectedCargo}
-                            rowsInTransit={rowsInTransit}
-                            setRowsInTransit={setRowsInTransit}
-                        />
-                    }
-                />
-            </Routes>
+            <div>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <CargosPage
+                                cargos={cargos}
+                                setCargos={setCargos}
+                                selectedCargo={selectedCargo}
+                                setSelectedCargo={setSelectedCargo}
+                                rowsInTransit={rowsInTransit}
+                                setRowsInTransit={setRowsInTransit}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/transits"
+                        element={
+                            <TransitsPage
+                                selectedCargo={selectedCargo}
+                                setSelectedCargo={setSelectedCargo}
+                                rowsInTransit={rowsInTransit}
+                                setRowsInTransit={setRowsInTransit}
+                            />
+                        }
+                    />
+                </Routes>
+            </div>
         </div>
     );
-}
+};
 
 export default App;
