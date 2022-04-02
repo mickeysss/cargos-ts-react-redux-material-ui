@@ -19,9 +19,7 @@ type Props = {
     setError: Dispatch<React.SetStateAction<string>>;
 };
 
-
 const Table = ({ rows, columns, selectedRow, setSelectedRow }: Props) => {
-
     const classes = useStyles();
 
     return (
@@ -41,4 +39,4 @@ const Table = ({ rows, columns, selectedRow, setSelectedRow }: Props) => {
     );
 };
 
-export default Table
+export default Table;

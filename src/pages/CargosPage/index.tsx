@@ -92,29 +92,31 @@ const CargosPage = ({
     };
 
     return (
-        <div className={styles.flexContainer}>
-            <h2 className={styles.title}>Cargos</h2>
-            <div className={styles.cargosList}>
-                <Table
-                    rows={cargos}
-                    selectedRow={selectedCargo}
-                    setSelectedRow={setSelectedCargo}
-                    columns={columns}
-                    setError={setError}/>
+        <div className={styles.main}>
+            <div className={styles.heroBg}/>
+            <div className={styles.flexContainer}>
+                <h2 className={styles.title}>Cargos</h2>
+                <div className={styles.cargosList}>
+                    <Table
+                        rows={cargos}
+                        selectedRow={selectedCargo}
+                        setSelectedRow={setSelectedCargo}
+                        columns={columns}
+                        setError={setError}/>
+                </div>
+                <div className={styles.buttonsContainer}>
+                    <AddCargo />
+
+                    <Button onClick={removeHandler}>Remove cargo</Button>
+
+                    <AddTransit
+                        setError={setError}
+                        selectedCargo={selectedCargo}
+                        setSelectedCargo={setSelectedCargo}
+                    />
+                </div>
+                {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
             </div>
-            <div className={styles.buttonsContainer}>
-                <AddCargo />
-
-                <Button onClick={removeHandler}>Remove cargo</Button>
-
-                <AddTransit
-                    setError={setError}
-                    selectedCargo={selectedCargo}
-                    setSelectedCargo={setSelectedCargo}
-                />
-            </div>
-
-            {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
         </div>
     );
 };
