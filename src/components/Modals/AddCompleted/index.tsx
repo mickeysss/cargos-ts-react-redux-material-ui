@@ -29,6 +29,7 @@ type Props = {
     setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
     setCompletedCargo: Dispatch<React.SetStateAction<cargoType>>;
     completedCargo: cargoType;
+    setError: Dispatch<React.SetStateAction<string>>;
 };
 
 const inputFieldStyles = {
@@ -36,6 +37,7 @@ const inputFieldStyles = {
 };
 
 const AddCompleted = ({
+    setError,
     completedCargo,
     setCompletedCargo,
     setRowsInTransit,
@@ -58,6 +60,8 @@ const AddCompleted = ({
             completedCargo.quantity
         ) {
             setOpen(true);
+        } else {
+            setError('Please select item');
         }
     };
 
@@ -90,7 +94,7 @@ const AddCompleted = ({
     };
     return (
         <div>
-            <Button onClick={onOpenCompletedHandler}>Complete transit</Button>
+            <Button onClick={onOpenCompletedHandler}>Confirm transit</Button>
             <Modal
                 onClose={onCloseCompletedHandler}
                 aria-labelledby="modal-modal-title"

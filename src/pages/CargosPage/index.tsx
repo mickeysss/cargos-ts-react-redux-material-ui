@@ -10,15 +10,6 @@ import styles from './styles.module.scss';
 import Table from '../../components/Table';
 import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
 
-type Props = {
-    cargos: cargoType[];
-    setCargos: Dispatch<React.SetStateAction<cargoType[]>>;
-    selectedCargo: cargoType;
-    rowsInTransit: cargoType[];
-    setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
-    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
-};
-
 const columns: GridColumns = [
     {
         field: 'status',
@@ -68,7 +59,20 @@ const columns: GridColumns = [
     },
 ];
 
+type Props = {
+    cargos: cargoType[];
+    setCargos: Dispatch<React.SetStateAction<cargoType[]>>;
+    selectedCargo: cargoType;
+    rowsInTransit: cargoType[];
+    setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
+    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
+    error: string;
+    setError: Dispatch<React.SetStateAction<string>>;
+};
+
 const CargosPage = ({
+    error,
+    setError,
     cargos,
     setCargos,
     selectedCargo,
@@ -77,25 +81,38 @@ const CargosPage = ({
     rowsInTransit,
 }: Props) => {
     const removeHandler = () => {
-        localStorage.setItem(
-            'cargos',
-            JSON.stringify(cargos.filter((cargo) => cargo !== selectedCargo))
-        );
+        if (
+            !selectedCargo.category &&
+            !selectedCargo.name &&
+            !selectedCargo.quantity
+        ) {
+            setError('Please select item');
+        } else {
+            localStorage.setItem(
+                'cargos',
+                JSON.stringify(
+                    cargos.filter((cargo) => cargo !== selectedCargo)
+                )
+            );
+            setCargos(cargos.filter((cargo) => cargo !== selectedCargo));
 
-        setSelectedCargo({
-            category: '',
-            id: 0,
-            name: '',
-            quantity: 0,
-            status: '',
-            destination: '',
-        });
+            setSelectedCargo({
+                category: '',
+                id: 0,
+                name: '',
+                quantity: 0,
+                status: '',
+                destination: '',
+            });
+        }
     };
+
     return (
         <div className={styles.flexContainer}>
             <h2 className={styles.title}>Cargos</h2>
             <div className={styles.cargosList}>
                 <Table
+                    setError={setError}
                     selectedRow={selectedCargo}
                     rows={cargos}
                     setSelectedRow={setSelectedCargo}
@@ -108,12 +125,14 @@ const CargosPage = ({
                 <Button onClick={removeHandler}>Remove cargo</Button>
 
                 <AddTransit
+                    setError={setError}
                     rowsInTransit={rowsInTransit}
                     setRowsInTransit={setRowsInTransit}
                     selectedCargo={selectedCargo}
                     setSelectedCargo={setSelectedCargo}
                 />
             </div>
+            {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
         </div>
     );
 };

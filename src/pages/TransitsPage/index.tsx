@@ -82,9 +82,13 @@ type Props = {
     setSelectedCargo: Dispatch<SetStateAction<cargoType>>;
     rowsInTransit: cargoType[];
     setRowsInTransit: Dispatch<SetStateAction<cargoType[]>>;
+    error: string;
+    setError: Dispatch<React.SetStateAction<string>>;
 };
 
 const TransitsPage = ({
+    error,
+    setError,
     selectedCargo,
     setSelectedCargo,
     rowsInTransit,
@@ -105,6 +109,7 @@ const TransitsPage = ({
             <h2 className={styles.title}>All transits</h2>
             <div className={styles.cargosList}>
                 <Table
+                    setError={setError}
                     selectedRow={selectedCargo}
                     rows={rowsInTransit}
                     setSelectedRow={setCompletedCargo}
@@ -112,6 +117,7 @@ const TransitsPage = ({
                 />
             </div>
             <AddCompleted
+                setError={setError}
                 rowsInTransit={rowsInTransit}
                 setRowsInTransit={setRowsInTransit}
                 selectedCargo={selectedCargo}
@@ -119,6 +125,7 @@ const TransitsPage = ({
                 completedCargo={completedCargo}
                 setCompletedCargo={setCompletedCargo}
             />
+            {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
         </div>
     );
 };

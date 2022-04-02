@@ -31,15 +31,18 @@ type Props = {
     setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
     rowsInTransit: cargoType[];
     setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
+    setError: Dispatch<React.SetStateAction<string>>;
 };
 
 const AddTransit = ({
+    setError,
     selectedCargo,
     setSelectedCargo,
     rowsInTransit,
     setRowsInTransit,
 }: Props) => {
     const [open, setOpen] = React.useState(false);
+
     const selectedCargoHandler = (
         e:
             | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -75,6 +78,7 @@ const AddTransit = ({
 
             setOpen(false);
         }
+
         localStorage.setItem(
             'transits',
             JSON.stringify([...rowsInTransit, selectedCargo])
@@ -88,6 +92,9 @@ const AddTransit = ({
             selectedCargo.quantity
         )
             setOpen(true);
+        else {
+            setError('Please select item');
+        }
     };
 
     const onCloseModalHandler = () => {
