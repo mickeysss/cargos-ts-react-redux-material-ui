@@ -12,7 +12,10 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
-import { cargoType } from '../../../App';
+import { useDispatch } from 'react-redux';
+import { addTransitCargoAction } from '../../../store/reducers/transits-reducer/action';
+import { transitCargoType } from '../../../store/reducers/transits-reducer/types';
+import { cargoType } from '../../../store/reducers/cargos-reducer/types';
 
 const style = {
     position: 'absolute' as const,
@@ -27,22 +30,16 @@ const style = {
 };
 
 type Props = {
-    selectedCargo: cargoType;
+    selectedCargo: transitCargoType;
     setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
-    rowsInTransit: cargoType[];
-    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
     setError: Dispatch<React.SetStateAction<string>>;
 };
 
 const AddTransit = ({
-    setError,
     selectedCargo,
     setSelectedCargo,
-    rowsInTransit,
-    setRowsInTransit,
 }: Props) => {
     const [open, setOpen] = React.useState(false);
-
     const selectedCargoHandler = (
         e:
             | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -59,13 +56,12 @@ const AddTransit = ({
         });
     };
 
+    const dispatch = useDispatch()
+
     const addTransitHandler = () => {
-        if (
-            selectedCargo.category &&
-            selectedCargo.name &&
-            selectedCargo.quantity
-        ) {
-            setRowsInTransit([...rowsInTransit, selectedCargo]);
+        selectedCargo.id &&
+            dispatch(addTransitCargoAction(selectedCargo));
+
             setSelectedCargo({
                 category: '',
                 id: 0,
@@ -79,22 +75,8 @@ const AddTransit = ({
             setOpen(false);
         }
 
-        localStorage.setItem(
-            'transits',
-            JSON.stringify([...rowsInTransit, selectedCargo])
-        );
-    };
-
     const onOpenModalHandler = () => {
-        if (
-            selectedCargo.category &&
-            selectedCargo.name &&
-            selectedCargo.quantity
-        )
-            setOpen(true);
-        else {
-            setError('Please select item');
-        }
+        selectedCargo.id && setOpen(true);
     };
 
     const onCloseModalHandler = () => {
@@ -105,7 +87,6 @@ const AddTransit = ({
         marginBottom: '20px',
     };
 
-    console.log(selectedCargo);
     return (
         <div>
             <Button onClick={onOpenModalHandler}>Add new transit</Button>

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Dispatch, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { addCargoAction } from '../../../store/reducers/cargos-reducer/actions';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-
-import { cargoType } from '../../../App';
 
 import { Input, InputLabel } from '@mui/material';
 
@@ -21,12 +22,7 @@ const style = {
     p: 4,
 };
 
-type Props = {
-    cargos: cargoType[];
-    setCargos: Dispatch<React.SetStateAction<cargoType[]>>;
-};
-
-const AddCargo = ({ cargos, setCargos }: Props) => {
+const AddCargo = () => {
     const [open, setOpen] = React.useState(false);
 
     const [newCargo, setNewCargo] = useState({
@@ -36,6 +32,8 @@ const AddCargo = ({ cargos, setCargos }: Props) => {
         quantity: 0,
         status: 'In stock',
     });
+
+    const dispatch = useDispatch()
 
     const changeCargoHandler = (
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -47,12 +45,8 @@ const AddCargo = ({ cargos, setCargos }: Props) => {
 
     const addCargoHandler = () => {
         if (newCargo.category && newCargo.name && newCargo.quantity) {
-            setCargos([...cargos, newCargo]);
+            dispatch(addCargoAction(newCargo))
             setOpen(false);
-            localStorage.setItem(
-                'cargos',
-                JSON.stringify([...cargos, newCargo])
-            );
         }
     };
 
