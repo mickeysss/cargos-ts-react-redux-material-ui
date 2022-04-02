@@ -1,13 +1,30 @@
-.flexContainer {
-  padding: 50px;
+.main{
+  position: relative;
   width: 85vw;
+  height: 100vh;
 }
 
-.title{
-  color: #FFFFFF;
-  margin-bottom: 50px;
+.heroBg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/imgs/statistics-hero.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.07;
 }
 
+.flexContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 50px;
+
+  .title {
+    color: #FFFFFF;
+    margin-bottom: 50px;
+  }
+}
 .tab{
   font-family: IBM Plex Sans, sans-serif;
   cursor: pointer;

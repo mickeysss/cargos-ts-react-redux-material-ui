@@ -7,8 +7,7 @@ import { AppRootStateType } from '../../store/reducers';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
 import { cargoType } from '../../store/reducers/cargos-reducer/types';
 
-
-import styles from '../CargosPage/styles.module.scss';
+import styles from '../TransitsPage/styles.module.scss';
 
 const columns: GridColumns = [
     {
@@ -105,25 +104,28 @@ const TransitsPage = ({
     });
 
     return (
-        <div className={styles.flexContainer}>
-            <h2 className={styles.title}>All transits</h2>
-            <div className={styles.cargosList}>
-                <Table
+        <div className={styles.main}>
+            <div className={styles.heroBg}/>
+            <div className={styles.flexContainer}>
+                <h2 className={styles.title}>All transits</h2>
+                <div className={styles.cargosList}>
+                    <Table
+                        setError={setError}
+                        rows={transitCargo}
+                        selectedRow={completedCargo}
+                        setSelectedRow={setCompletedCargo}
+                        columns={columns}
+                    />
+                </div>
+                <AddCompleted
                     setError={setError}
-                    rows={transitCargo}
-                    selectedRow={completedCargo}
-                    setSelectedRow={setCompletedCargo}
-                    columns={columns}
+                    selectedCargo={selectedCargo}
+                    setSelectedCargo={setSelectedCargo}
+                    completedCargo={completedCargo}
+                    setCompletedCargo={setCompletedCargo}
                 />
+                {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
             </div>
-            <AddCompleted
-                setError={setError}
-                selectedCargo={selectedCargo}
-                setSelectedCargo={setSelectedCargo}
-                completedCargo={completedCargo}
-                setCompletedCargo={setCompletedCargo}
-            />
-            {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
         </div>
     );
 };
