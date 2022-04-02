@@ -27,3 +27,28 @@
     font-size: 38px;
     margin-bottom: 15px;
   }
+
+.buttonContainer{
+  margin: 100px auto;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  svg{
+    width: 40px;
+    height: 40px;
+    fill: #d99f2c;
+  }
+
+  button{
+    display: block;
+    color: #d99f2c;
+  }
+
+  button:hover{
+    background: rgba(230, 209, 21,0.07);
+  }
+
+}

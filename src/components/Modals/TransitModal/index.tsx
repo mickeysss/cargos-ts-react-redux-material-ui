@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ChangeEvent, Dispatch } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
@@ -12,10 +14,14 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
+
+import { AppRootStateType } from '../../../store/reducers';
 import { addTransitCargoAction } from '../../../store/reducers/transits-reducer/action';
 import { transitCargoType } from '../../../store/reducers/transits-reducer/types';
-import { cargoType } from '../../../store/reducers/cargos-reducer/types';
+import {
+    cargoType,
+    commonCargosTypes,
+} from '../../../store/reducers/cargos-reducer/types';
 
 const style = {
     position: 'absolute' as const,
@@ -30,16 +36,25 @@ const style = {
 };
 
 type Props = {
+    open: boolean;
+    setOpen: Dispatch<React.SetStateAction<boolean>>;
     selectedCargo: transitCargoType;
     setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
     setError: Dispatch<React.SetStateAction<string>>;
 };
 
-const AddTransit = ({
+const TransitModal = ({
     selectedCargo,
     setSelectedCargo,
+    open,
+    setOpen,
 }: Props) => {
-    const [open, setOpen] = React.useState(false);
+    const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
+        (state) => state.cargos
+    );
+
+    const { destinations } = commonCargos;
+
     const selectedCargoHandler = (
         e:
             | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -56,27 +71,22 @@ const AddTransit = ({
         });
     };
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const addTransitHandler = () => {
-        selectedCargo.id &&
-            dispatch(addTransitCargoAction(selectedCargo));
+        selectedCargo.id && dispatch(addTransitCargoAction(selectedCargo));
 
-            setSelectedCargo({
-                category: '',
-                id: 0,
-                name: '',
-                quantity: 0,
-                status: '',
-                destination: '',
-                attention: '',
-            });
+        setSelectedCargo({
+            category: '',
+            id: 0,
+            name: '',
+            quantity: 0,
+            status: '',
+            destination: '',
+            attention: '',
+        });
 
-            setOpen(false);
-        }
-
-    const onOpenModalHandler = () => {
-        selectedCargo.id && setOpen(true);
+        setOpen(false);
     };
 
     const onCloseModalHandler = () => {
@@ -89,7 +99,6 @@ const AddTransit = ({
 
     return (
         <div>
-            <Button onClick={onOpenModalHandler}>Add new transit</Button>
             <Modal
                 onClose={() => onCloseModalHandler()}
                 aria-labelledby="modal-modal-title"
@@ -135,12 +144,14 @@ const AddTransit = ({
                             defaultValue=""
                             style={inputFieldStyles}
                         >
-                            <MenuItem value="Krasnodar">Krasnodar</MenuItem>
-                            <MenuItem value="Moscow">Moscow</MenuItem>
-                            <MenuItem value="Rostov">Rostov</MenuItem>
+                            {destinations?.map((destination, i) => (
+                                <MenuItem key={i} value={destination}>
+                                    {destination}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
-                    <div style={{ margin: '20px 0 0 0' }}>
+                    <div style={{ marginTop: '20px' }}>
                         <Button onClick={addTransitHandler} variant="outlined">
                             Add transit
                         </Button>
@@ -151,4 +162,4 @@ const AddTransit = ({
     );
 };
 
-export default AddTransit;
+export default TransitModal;
