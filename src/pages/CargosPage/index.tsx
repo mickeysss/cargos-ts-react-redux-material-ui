@@ -4,11 +4,13 @@ import { AddCargo, AddTransit } from '../../components';
 
 import Button from '@mui/material/Button';
 
-import { cargoType } from '../../App';
-
 import styles from './styles.module.scss';
 import Table from '../../components/Table';
 import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppRootStateType } from '../../store/reducers';
+import { removeCargoAction } from '../../store/reducers/cargos-reducer/actions';
+import { cargoType } from '../../store/reducers/cargos-reducer/types';
 
 const columns: GridColumns = [
     {
@@ -60,12 +62,8 @@ const columns: GridColumns = [
 ];
 
 type Props = {
-    cargos: cargoType[];
-    setCargos: Dispatch<React.SetStateAction<cargoType[]>>;
     selectedCargo: cargoType;
-    rowsInTransit: cargoType[];
     setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
-    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
     error: string;
     setError: Dispatch<React.SetStateAction<string>>;
 };
@@ -73,38 +71,24 @@ type Props = {
 const CargosPage = ({
     error,
     setError,
-    cargos,
-    setCargos,
     selectedCargo,
     setSelectedCargo,
-    setRowsInTransit,
-    rowsInTransit,
 }: Props) => {
-    const removeHandler = () => {
-        if (
-            !selectedCargo.category &&
-            !selectedCargo.name &&
-            !selectedCargo.quantity
-        ) {
-            setError('Please select item');
-        } else {
-            localStorage.setItem(
-                'cargos',
-                JSON.stringify(
-                    cargos.filter((cargo) => cargo !== selectedCargo)
-                )
-            );
-            setCargos(cargos.filter((cargo) => cargo !== selectedCargo));
+    const cargos = useSelector<AppRootStateType, cargoType[]>(state => state.cargos)
 
-            setSelectedCargo({
-                category: '',
-                id: 0,
-                name: '',
-                quantity: 0,
-                status: '',
-                destination: '',
-            });
-        }
+    const dispatch = useDispatch()
+
+    const removeHandler = () => {
+        dispatch(removeCargoAction(selectedCargo))
+
+        setSelectedCargo({
+            category: '',
+            id: 0,
+            name: '',
+            quantity: 0,
+            status: '',
+            destination: '',
+        });
     };
 
     return (
@@ -112,26 +96,24 @@ const CargosPage = ({
             <h2 className={styles.title}>Cargos</h2>
             <div className={styles.cargosList}>
                 <Table
-                    setError={setError}
-                    selectedRow={selectedCargo}
                     rows={cargos}
+                    selectedRow={selectedCargo}
                     setSelectedRow={setSelectedCargo}
                     columns={columns}
-                />
+                    setError={setError}/>
             </div>
             <div className={styles.buttonsContainer}>
-                <AddCargo cargos={cargos} setCargos={setCargos} />
+                <AddCargo />
 
                 <Button onClick={removeHandler}>Remove cargo</Button>
 
                 <AddTransit
                     setError={setError}
-                    rowsInTransit={rowsInTransit}
-                    setRowsInTransit={setRowsInTransit}
                     selectedCargo={selectedCargo}
                     setSelectedCargo={setSelectedCargo}
                 />
             </div>
+
             {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
         </div>
     );

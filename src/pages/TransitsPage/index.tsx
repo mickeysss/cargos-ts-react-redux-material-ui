@@ -1,10 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-
 import AddCompleted from '../../components/Modals/AddCompleted';
-
-import { cargoType } from '../../App';
-import Table from '../../components/Table';
 import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
+import Table from '../../components/Table'
+import { useSelector } from 'react-redux';
+import { AppRootStateType } from '../../store/reducers';
+import { transitCargoType } from '../../store/reducers/transits-reducer/types';
+import { cargoType } from '../../store/reducers/cargos-reducer/types';
+
 
 import styles from '../CargosPage/styles.module.scss';
 
@@ -78,12 +80,10 @@ const columns: GridColumns = [
 ];
 
 type Props = {
-    selectedCargo: cargoType;
-    setSelectedCargo: Dispatch<SetStateAction<cargoType>>;
-    rowsInTransit: cargoType[];
-    setRowsInTransit: Dispatch<SetStateAction<cargoType[]>>;
     error: string;
     setError: Dispatch<React.SetStateAction<string>>;
+    selectedCargo: cargoType;
+    setSelectedCargo: Dispatch<SetStateAction<cargoType>>;
 };
 
 const TransitsPage = ({
@@ -91,9 +91,9 @@ const TransitsPage = ({
     setError,
     selectedCargo,
     setSelectedCargo,
-    rowsInTransit,
-    setRowsInTransit,
 }: Props) => {
+    const transitCargo = useSelector<AppRootStateType,transitCargoType[]>(state => state.transitCargo)
+
     const [completedCargo, setCompletedCargo] = useState<cargoType>({
         category: '',
         id: 0,
@@ -110,16 +110,14 @@ const TransitsPage = ({
             <div className={styles.cargosList}>
                 <Table
                     setError={setError}
-                    selectedRow={selectedCargo}
-                    rows={rowsInTransit}
+                    rows={transitCargo}
+                    selectedRow={completedCargo}
                     setSelectedRow={setCompletedCargo}
                     columns={columns}
                 />
             </div>
             <AddCompleted
                 setError={setError}
-                rowsInTransit={rowsInTransit}
-                setRowsInTransit={setRowsInTransit}
                 selectedCargo={selectedCargo}
                 setSelectedCargo={setSelectedCargo}
                 completedCargo={completedCargo}
