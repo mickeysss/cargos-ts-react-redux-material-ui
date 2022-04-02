@@ -1,20 +1,23 @@
 import * as React from 'react';
 
+import { useSelector } from 'react-redux';
+
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import { TabsList } from './components/TabsList';
 import { Tab } from './components/Tab';
 import { TabPanel } from './components/TabPanel';
 
-import styles from './styles.module.scss';
-import { useSelector } from 'react-redux';
 import { AppRootStateType } from '../../store/reducers';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
-import { cargoType } from '../../store/reducers/cargos-reducer/types';
+import { commonCargosTypes } from '../../store/reducers/cargos-reducer/types';
+
+import styles from './styles.module.scss';
 
 const StatisticPage = () => {
-    const cargos = useSelector<AppRootStateType, cargoType[]>(
+    const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
         (state) => state.cargos
     );
+    const { cargos } = commonCargos;
 
     const transitCargos = useSelector<AppRootStateType, transitCargoType[]>(
         (state) => state.transitCargo

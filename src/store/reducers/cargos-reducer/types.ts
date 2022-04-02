@@ -6,12 +6,15 @@ export type cargoType = {
     status: string;
     destination?: string;
     attention?: string | number;
-
 };
 
+export type commonCargosTypes = {
+    cargos: cargoType[];
+    destinations?: string[];
+};
 
 export type addCargoType = {
-    type: typeof ADD_CARGO
+    type: typeof ADD_CARGO;
     payload: cargoType;
 };
 
@@ -25,10 +28,8 @@ export type editCargoType = {
     payload: cargoType;
 };
 
-
 export const ADD_CARGO = 'ADD_CARGO';
 export const REMOVE_CARGO = 'REMOVE_CARGO';
 export const EDIT_CARGO = 'EDIT_CARGO';
 
-
-export type actionTypes = addCargoType | removeCargoType | editCargoType
+export type actionTypes = addCargoType | removeCargoType | editCargoType;
