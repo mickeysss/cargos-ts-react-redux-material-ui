@@ -1,6 +1,6 @@
 import Sidebar from './Sidebar';
 import Table from './Table';
-import AddCargo from './Modals/AddCargo';
-import AddTransit from './Modals/AddTransit';
+import CargoModal from './Modals/CargoModal';
+import TransitModal from './Modals/TransitModal';
 
-export { Sidebar, Table, AddCargo, AddTransit };
+export { Sidebar, Table, TransitModal, CargoModal };

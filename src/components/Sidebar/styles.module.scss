@@ -3,13 +3,12 @@
   background: rgb(55,54,55);
   background: radial-gradient(circle, rgba(55,54,55,1) 0%, rgba(52,51,51,1) 50%, rgba(20,20,20,1) 100%);
   height: 100vh;
-  width: 10vw;
+  width: 15vw;
   min-width: 150px;
-  border-right: 1px dotted rgba(255,255,224,0.1);
+  border-right: .5px solid rgb(71, 53, 16);
 
   h1{
     padding: 20px;
-
     text-align: center;
     text-transform: uppercase;
     font-size: 20px;
@@ -19,20 +18,21 @@
 
 .navbar{
   padding: 20px;
-
   margin-top: 20px;
+  :hover{
+    color: #d99f2c;
+  }
+
   li{
     color: white;
     list-style: none;
+
     span{
       color: white;
     }
+
     a{
       text-decoration: none;
-    }
-    :hover{
-
-      color: yellow;
     }
   }
 }
@@ -40,7 +40,6 @@
 .logoContainer{
   overflow: hidden;
   align-items: center;
-
 }
 
 .road{
@@ -52,45 +51,44 @@
   height: 2px;
   width: 100%;
   background: #424141;
-  border-bottom: 7px dashed yellow;
+  border-bottom: 7px dashed #d99f2c;
 }
-.navbar{
-  :not(:last-child){
+
+.navbar :not(:last-child){
     margin-bottom: 30px;
   }
-}
+
+
 .navItem{
   font-size: 20px;
 }
 
 .icon2{
   animation: spin2 15s linear infinite;
+
   svg {
     transform: scale(-1, 1);
     position: relative;
     bottom: -3px;
-
   }
 }
 
 @keyframes spin2 {
-
   0% { -webkit-transform: translateX(120%);
   }
   100% { -webkit-transform: translateX(-20%); transform: translateX(-20%); }
 }
+
 .icon{
   animation: spin 12s linear infinite;
 
   svg {
     position: relative;
     bottom: -2px;
-
   }
 
   @keyframes spin {
     0% { -webkit-transform: translateX(-20%); }
     100% { -webkit-transform: translateX(120%); transform: translateX(120%); }
   }
-
 }

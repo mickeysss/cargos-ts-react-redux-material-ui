@@ -1,16 +1,24 @@
 import React, { Dispatch } from 'react';
 
-import { AddCargo, AddTransit } from '../../components';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { removeCargoAction } from '../../store/reducers/cargos-reducer/actions';
+import { AppRootStateType } from '../../store/reducers';
+import {
+    cargoType,
+    commonCargosTypes,
+} from '../../store/reducers/cargos-reducer/types';
+
+import Table from '../../components/Table';
+import TransitModal from '../../components/Modals/TransitModal';
+import CargoModal from '../../components/Modals/CargoModal';
 
 import Button from '@mui/material/Button';
+import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import { AddLocation, Delete, EditLocationAlt } from '@mui/icons-material';
 
 import styles from './styles.module.scss';
-import Table from '../../components/Table';
-import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType } from '../../store/reducers';
-import { removeCargoAction } from '../../store/reducers/cargos-reducer/actions';
-import { cargoType } from '../../store/reducers/cargos-reducer/types';
 
 const columns: GridColumns = [
     {
@@ -74,12 +82,22 @@ const CargosPage = ({
     selectedCargo,
     setSelectedCargo,
 }: Props) => {
-    const cargos = useSelector<AppRootStateType, cargoType[]>(state => state.cargos)
+    const [openCargo, setOpenCargo] = React.useState(false);
+    const [openTransit, setOpenTransit] = React.useState(false);
 
-    const dispatch = useDispatch()
+    const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
+        (state) => state.cargos
+    );
+    const { cargos } = commonCargos;
+
+    const dispatch = useDispatch();
+
+    const onOpenModalHandler = () => {
+        selectedCargo.id && setOpenTransit(true);
+    };
 
     const removeHandler = () => {
-        dispatch(removeCargoAction(selectedCargo))
+        dispatch(removeCargoAction(selectedCargo));
 
         setSelectedCargo({
             category: '',
@@ -93,23 +111,45 @@ const CargosPage = ({
 
     return (
         <div className={styles.main}>
-            <div className={styles.heroBg}/>
+            <div className={styles.heroBg} />
             <div className={styles.flexContainer}>
-                <h2 className={styles.title}>Cargos</h2>
+                <h2 className={styles.headerTitle}>Cargos</h2>
                 <div className={styles.cargosList}>
                     <Table
                         rows={cargos}
                         selectedRow={selectedCargo}
                         setSelectedRow={setSelectedCargo}
                         columns={columns}
-                        setError={setError}/>
+                        setError={setError}
+                    />
                 </div>
-                <div className={styles.buttonsContainer}>
-                    <AddCargo />
+                <div className={styles.tableButtonContainer}>
+                    <Button onClick={() => setOpenCargo(true)}>
+                        <AddBoxIcon />
+                        <div>Add cargo</div>
+                    </Button>
+                    <CargoModal open={openCargo} setOpen={setOpenCargo} />
+                    <Button>
+                        <EditLocationAlt />
+                        <span>Edit cargo</span>
+                    </Button>
+                    <Button onClick={removeHandler}>
+                        <Delete />
+                        <span>Remove cargo</span>
+                    </Button>
+                </div>
 
-                    <Button onClick={removeHandler}>Remove cargo</Button>
-
-                    <AddTransit
+                <div className={styles.buttonContainer}>
+                    <Button
+                        className={styles.button}
+                        onClick={onOpenModalHandler}
+                    >
+                        <AddLocation />
+                        <div>Add transit</div>
+                    </Button>
+                    <TransitModal
+                        open={openTransit}
+                        setOpen={setOpenTransit}
                         setError={setError}
                         selectedCargo={selectedCargo}
                         setSelectedCargo={setSelectedCargo}

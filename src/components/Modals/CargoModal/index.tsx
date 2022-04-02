@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { addCargoAction } from '../../../store/reducers/cargos-reducer/actions';
@@ -22,9 +22,12 @@ const style = {
     p: 4,
 };
 
-const AddCargo = () => {
-    const [open, setOpen] = React.useState(false);
+type Props = {
+    open: boolean;
+    setOpen: Dispatch<SetStateAction<boolean>>;
+};
 
+const CargoModal = ({ open, setOpen }: Props) => {
     const [newCargo, setNewCargo] = useState({
         id: 0,
         name: '',
@@ -33,7 +36,7 @@ const AddCargo = () => {
         status: 'In stock',
     });
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const changeCargoHandler = (
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -45,14 +48,13 @@ const AddCargo = () => {
 
     const addCargoHandler = () => {
         if (newCargo.category && newCargo.name && newCargo.quantity) {
-            dispatch(addCargoAction(newCargo))
+            dispatch(addCargoAction(newCargo));
             setOpen(false);
         }
     };
 
     return (
         <div>
-            <Button onClick={() => setOpen(true)}>Add new cargo</Button>
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
@@ -91,4 +93,4 @@ const AddCargo = () => {
     );
 };
 
-export default AddCargo;
+export default CargoModal;

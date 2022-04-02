@@ -1,11 +1,18 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import AddCompleted from '../../components/Modals/AddCompleted';
-import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
-import Table from '../../components/Table'
+
 import { useSelector } from 'react-redux';
+
+import CompletedModal from '../../components/Modals/CompletedModal';
+import Table from '../../components/Table';
+
 import { AppRootStateType } from '../../store/reducers';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
 import { cargoType } from '../../store/reducers/cargos-reducer/types';
+
+import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
+
+import Button from '@mui/material/Button';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import styles from '../TransitsPage/styles.module.scss';
 
@@ -91,7 +98,11 @@ const TransitsPage = ({
     selectedCargo,
     setSelectedCargo,
 }: Props) => {
-    const transitCargo = useSelector<AppRootStateType,transitCargoType[]>(state => state.transitCargo)
+    const [open, setOpen] = React.useState(false);
+
+    const transitCargo = useSelector<AppRootStateType, transitCargoType[]>(
+        (state) => state.transitCargo
+    );
 
     const [completedCargo, setCompletedCargo] = useState<cargoType>({
         category: '',
@@ -103,9 +114,18 @@ const TransitsPage = ({
         attention: '',
     });
 
+    const onOpenCompletedHandler = () => {
+        if (completedCargo.id) {
+            setOpen(true);
+            setError('');
+        } else {
+            setError('Please select item');
+        }
+    };
+
     return (
         <div className={styles.main}>
-            <div className={styles.heroBg}/>
+            <div className={styles.heroBg} />
             <div className={styles.flexContainer}>
                 <h2 className={styles.title}>All transits</h2>
                 <div className={styles.cargosList}>
@@ -117,13 +137,22 @@ const TransitsPage = ({
                         columns={columns}
                     />
                 </div>
-                <AddCompleted
-                    setError={setError}
-                    selectedCargo={selectedCargo}
-                    setSelectedCargo={setSelectedCargo}
-                    completedCargo={completedCargo}
-                    setCompletedCargo={setCompletedCargo}
-                />
+                <div className={styles.buttonContainer}>
+                    <Button onClick={onOpenCompletedHandler}>
+                        <CheckCircleIcon />
+                        <div>Confirm transit</div>
+                    </Button>
+                    <CompletedModal
+                        open={open}
+                        setOpen={setOpen}
+                        setError={setError}
+                        selectedCargo={selectedCargo}
+                        setSelectedCargo={setSelectedCargo}
+                        completedCargo={completedCargo}
+                        setCompletedCargo={setCompletedCargo}
+                    />
+                </div>
+
                 {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
             </div>
         </div>
