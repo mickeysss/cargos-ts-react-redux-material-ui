@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Dispatch, SetStateAction, useState } from 'react';
+
 import { useDispatch } from 'react-redux';
+
+import uniqid from 'uniqid';
 
 import { addCargoAction } from '../../../store/reducers/cargos-reducer/actions';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-
 import { Input, InputLabel } from '@mui/material';
 
 const style = {
@@ -27,13 +29,13 @@ type Props = {
     setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const CargoModal = ({ open, setOpen }: Props) => {
+const AddCargoModal = ({ open, setOpen }: Props) => {
     const [newCargo, setNewCargo] = useState({
         id: 0,
-        name: '',
+        position: '',
         category: '',
-        quantity: 0,
         status: 'In stock',
+        cargoNumber: '',
     });
 
     const dispatch = useDispatch();
@@ -43,11 +45,16 @@ const CargoModal = ({ open, setOpen }: Props) => {
     ) => {
         const { name, value } = e.target;
 
-        setNewCargo({ ...newCargo, id: Date.now(), [name]: value });
+        setNewCargo({
+            ...newCargo,
+            id: Date.now(),
+            cargoNumber: uniqid(),
+            [name]: value,
+        });
     };
 
     const addCargoHandler = () => {
-        if (newCargo.category && newCargo.name && newCargo.quantity) {
+        if (newCargo.id) {
             dispatch(addCargoAction(newCargo));
             setOpen(false);
         }
@@ -62,9 +69,11 @@ const CargoModal = ({ open, setOpen }: Props) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <InputLabel htmlFor="name">Add name of cargo</InputLabel>
+                    <InputLabel htmlFor="position">
+                        Add cargo position
+                    </InputLabel>
                     <Input
-                        name="name"
+                        name="position"
                         type="string"
                         onChange={(e) => changeCargoHandler(e)}
                     />
@@ -74,12 +83,6 @@ const CargoModal = ({ open, setOpen }: Props) => {
                     <Input
                         name="category"
                         type="string"
-                        onChange={(e) => changeCargoHandler(e)}
-                    />
-                    <InputLabel htmlFor="quantity">Quantity</InputLabel>
-                    <Input
-                        name="quantity"
-                        type="number"
                         onChange={(e) => changeCargoHandler(e)}
                     />
                     <div style={{ marginTop: '20px' }}>
@@ -93,4 +96,4 @@ const CargoModal = ({ open, setOpen }: Props) => {
     );
 };
 
-export default CargoModal;
+export default AddCargoModal;
