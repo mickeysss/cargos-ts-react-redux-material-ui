@@ -9,7 +9,7 @@ import { AppRootStateType } from '../../store/reducers';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
 import { cargoType } from '../../store/reducers/cargos-reducer/types';
 
-import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
+import { GridColumns } from '@mui/x-data-grid';
 
 import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -18,65 +18,61 @@ import styles from '../TransitsPage/styles.module.scss';
 
 const columns: GridColumns = [
     {
+        field: 'cargoNumber',
+        headerName: 'Cargo Number',
+        width: 150,
+        type: 'string',
+        align: 'left',
+        headerAlign: 'left',
+    },
+
+    {
         field: 'status',
         headerName: 'Status',
-        width: 200,
+        width: 150,
         type: 'string',
         align: 'left',
         headerAlign: 'left',
     },
     {
-        field: 'destination',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value.length < 3;
-            return { ...params.props, error: hasError };
-        },
-        headerName: 'Destination',
-        width: 200,
+        field: 'destinationFrom',
+        headerName: 'Destination From',
+        width: 150,
         align: 'left',
         headerAlign: 'left',
     },
     {
-        field: 'name',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value.length < 3;
-            return { ...params.props, error: hasError };
-        },
-        headerName: 'Name',
-        width: 200,
+        field: 'destinationTo',
+        headerName: 'Destination To',
+        width: 150,
+        align: 'left',
+        headerAlign: 'left',
+    },
+    {
+        field: 'position',
+        headerName: 'Position',
+        width: 150,
         align: 'left',
         headerAlign: 'left',
     },
     {
         field: 'category',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value.length < 3;
-            return { ...params.props, error: hasError };
-        },
         headerName: 'Category',
-        width: 200,
+        width: 100,
         type: 'string',
         align: 'left',
         headerAlign: 'left',
     },
     {
         field: 'quantity',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value < 0;
-            return { ...params.props, error: hasError };
-        },
         headerName: 'Quantity',
-        width: 200,
+        width: 100,
         type: 'number',
         align: 'left',
         headerAlign: 'left',
     },
     {
         field: 'attention',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value < 0;
-            return { ...params.props, error: hasError };
-        },
         headerName: 'Attention',
         width: 200,
         type: 'number',
@@ -104,13 +100,15 @@ const TransitsPage = ({
         (state) => state.transitCargo
     );
 
-    const [completedCargo, setCompletedCargo] = useState<cargoType>({
+    const [completedCargo, setCompletedCargo] = useState<transitCargoType>({
         category: '',
         id: 0,
-        name: '',
+        position: '',
+        cargoNumber: '',
         quantity: 0,
         status: '',
-        destination: '',
+        destinationFrom: '',
+        destinationTo: '',
         attention: '',
     });
 
@@ -151,9 +149,8 @@ const TransitsPage = ({
                         completedCargo={completedCargo}
                         setCompletedCargo={setCompletedCargo}
                     />
+                    {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
                 </div>
-
-                {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
             </div>
         </div>
     );
