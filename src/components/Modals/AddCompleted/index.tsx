@@ -5,9 +5,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { Input, InputLabel } from '@mui/material';
-
-import { cargoType } from '../../../App';
-
+import { useDispatch } from 'react-redux';
+import { completeCargoAction } from '../../../store/reducers/transits-reducer/action';
+import { cargoType } from '../../../store/reducers/cargos-reducer/types';
 import styles from './styles.modules.scss';
 
 const style = {
@@ -25,8 +25,6 @@ const style = {
 type Props = {
     selectedCargo: cargoType;
     setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
-    rowsInTransit: cargoType[];
-    setRowsInTransit: Dispatch<React.SetStateAction<cargoType[]>>;
     setCompletedCargo: Dispatch<React.SetStateAction<cargoType>>;
     completedCargo: cargoType;
     setError: Dispatch<React.SetStateAction<string>>;
@@ -40,9 +38,8 @@ const AddCompleted = ({
     setError,
     completedCargo,
     setCompletedCargo,
-    setRowsInTransit,
-    rowsInTransit,
 }: Props) => {
+
     const [open, setOpen] = React.useState(false);
 
     const onChangeHandler = (
@@ -53,43 +50,24 @@ const AddCompleted = ({
         setCompletedCargo({ ...completedCargo, [name]: value });
     };
 
+    const dispatch = useDispatch()
+
     const onOpenCompletedHandler = () => {
-        if (
-            completedCargo.category &&
-            completedCargo.name &&
-            completedCargo.quantity
-        ) {
-            setOpen(true);
-        } else {
-            setError('Please select item');
-        }
-    };
+            if(completedCargo.id) {
+                setOpen(true)
+                setError('')
+            } else{
+                setError('Please select item');
+            }
+    }
 
     const onCloseCompletedHandler = () => {
         setOpen(false);
     };
 
     const completeHandler = () => {
-        const complete = rowsInTransit.map((row) => {
-            console.log('rowCargo', row.quantity);
-            console.log('completedCargo', completedCargo.quantity);
+        dispatch(completeCargoAction((completedCargo)))
 
-            if (row.id === completedCargo.id) {
-                if (row.quantity !== completedCargo.quantity) {
-                    row.status = 'None fully completed';
-                    row.attention = String(
-                        +row.quantity - +completedCargo.quantity
-                    );
-                }
-                if (row.quantity === completedCargo.quantity) {
-                    row.status = 'Completed';
-                    row.attention = 'None problems';
-                }
-            }
-
-            return row;
-        });
-        setRowsInTransit(complete);
         onCloseCompletedHandler();
     };
     return (
@@ -156,6 +134,6 @@ const AddCompleted = ({
             </Modal>
         </div>
     );
-};
+}
 
 export default AddCompleted;

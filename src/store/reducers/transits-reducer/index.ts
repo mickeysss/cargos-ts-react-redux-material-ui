@@ -1,58 +1,27 @@
-export type cargoType = {
-    id: number;
-    name: string;
-    category: string;
-    quantity: number;
-    status: string;
-    destination?: string;
-    attention?: string;
-};
+import { actionTypes, ADD_TRANSIT_CARGO, COMPLETE_TRANSIT_CARGO, transitCargoType } from './types';
 
-const initialState: cargoType[] = [
-    {
-        id: 1,
-        name: 'Burgers buns',
-        quantity: 1000,
-        category: 'Meal',
-        status: 'In stock',
-        attention: '0',
-    },
-    {
-        id: 2,
-        name: 'Oranges',
-        quantity: 5000,
-        category: 'Meal',
-        status: 'In stock',
-        attention: '0',
-    },
-    {
-        id: 3,
-        name: 'Burgers buns',
-        quantity: 1000,
-        category: 'Meal',
-        status: 'In stock',
-        attention: '0',
-    },
-    {
-        id: 4,
-        name: 'Burgers buns',
-        quantity: 1000,
-        category: 'Meal',
-        status: 'In stock',
-        attention: '0',
-    },
-    {
-        id: 5,
-        name: 'Burgers buns',
-        quantity: 1000,
-        category: 'Meal',
-        status: 'In stock',
-        attention: '0',
-    },
-];
+const initialState: transitCargoType[] = [];
 
-export const cargosReducer = (state = initialState, action: any) => {
+export const transitCargoReducer = (state = initialState, action: actionTypes) => {
     switch (action.type) {
+        case ADD_TRANSIT_CARGO:
+            return [...state, action.payload]
+        case COMPLETE_TRANSIT_CARGO:
+            return [...state.map(
+                (item) => item.id === action.payload.id ?
+                    item.quantity === action.payload.quantity ?
+                    {
+                        ...item,
+                        status: 'Completed',
+                        attention: 'No problem issued'
+                    }
+                    : {
+                        ...item,
+                        status: 'Partly completed',
+                        attention: item.quantity - action.payload.quantity
+                    }
+                    : item
+            )]
         default:
             return state;
     }

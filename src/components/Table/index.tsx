@@ -1,19 +1,10 @@
 import React, { Dispatch } from 'react';
-
-import { useStyles } from '../../hooks/useStyles';
-
 import { ThemeProvider } from '@emotion/react';
-
-import { cargoType } from '../../App';
-
-import {
-    DataGrid,
-    GridColumns,
-    GridRowModel,
-    GridRowParams,
-} from '@mui/x-data-grid';
-
+import { DataGrid, GridColumns } from '@mui/x-data-grid';
 import { createTheme } from '@mui/material';
+import { useStyles } from '../../hooks/useStyles';
+import { transitCargoType } from '../../store/reducers/transits-reducer/types';
+import { cargoType } from '../../store/reducers/cargos-reducer/types';
 
 const theme = createTheme({
     palette: {
@@ -22,27 +13,16 @@ const theme = createTheme({
 });
 type Props = {
     selectedRow: cargoType;
-    rows: cargoType[];
+    rows: cargoType[] | transitCargoType[];
     columns: GridColumns;
     setSelectedRow: Dispatch<React.SetStateAction<cargoType>>;
     setError: Dispatch<React.SetStateAction<string>>;
 };
 
-const Table = ({
-    rows,
-    columns,
-    selectedRow,
-    setSelectedRow,
-    setError,
-}: Props) => {
-    const classes = useStyles();
 
-    const onRowClickHandler = (e: GridRowParams<GridRowModel>) => {
-        setError('');
-        if (selectedRow) {
-            setSelectedRow(e.row as cargoType);
-        } else return null;
-    };
+const Table = ({ rows, columns, selectedRow, setSelectedRow }: Props) => {
+
+    const classes = useStyles();
 
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
@@ -51,7 +31,9 @@ const Table = ({
                     rows={rows}
                     columns={columns}
                     experimentalFeatures={{ newEditingApi: true }}
-                    onRowClick={(e) => onRowClickHandler(e)}
+                    onRowClick={(e) =>
+                        selectedRow ? setSelectedRow(e.row as cargoType) : null
+                    }
                     classes={classes}
                 />
             </ThemeProvider>
@@ -59,4 +41,4 @@ const Table = ({
     );
 };
 
-export default Table;
+export default Table

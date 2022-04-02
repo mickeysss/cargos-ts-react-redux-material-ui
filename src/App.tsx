@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 
 import { Routes, Route } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
-
 import CargosPage from './pages/CargosPage';
 import TransitsPage from './pages/TransitsPage';
 
 import { Sidebar } from './components';
 
-import { AppRootStateType } from './store/reducers';
-
 import './assets/styles/_global.scss';
 import styles from './styles.module.scss';
+import StatisticPage from './pages/StatisticPage';
 
 export type cargoType = {
     id: number;
@@ -25,17 +22,8 @@ export type cargoType = {
 };
 
 const App = () => {
-    const localStore = JSON.parse(localStorage.getItem('cargos') as string);
 
     const [error, setError] = useState('');
-
-    const cargosInitial = useSelector<AppRootStateType, cargoType[]>(
-        (state) => state.cargos
-    );
-
-    const [cargos, setCargos] = useState<cargoType[]>(
-        localStore || cargosInitial
-    );
 
     const [selectedCargo, setSelectedCargo] = useState<cargoType>({
         category: '',
@@ -46,10 +34,6 @@ const App = () => {
         destination: '',
         attention: '-',
     });
-
-    const [rowsInTransit, setRowsInTransit] = useState<cargoType[]>(
-        JSON.parse(localStorage.getItem('transits') as string) || []
-    );
 
     return (
         <div className={styles.appContainer}>
@@ -62,12 +46,8 @@ const App = () => {
                             <CargosPage
                                 error={error}
                                 setError={setError}
-                                cargos={cargos}
-                                setCargos={setCargos}
                                 selectedCargo={selectedCargo}
                                 setSelectedCargo={setSelectedCargo}
-                                rowsInTransit={rowsInTransit}
-                                setRowsInTransit={setRowsInTransit}
                             />
                         }
                     />
@@ -79,9 +59,13 @@ const App = () => {
                                 setError={setError}
                                 selectedCargo={selectedCargo}
                                 setSelectedCargo={setSelectedCargo}
-                                rowsInTransit={rowsInTransit}
-                                setRowsInTransit={setRowsInTransit}
                             />
+                        }
+                    />
+                    <Route
+                        path="/statistics"
+                        element={
+                            <StatisticPage />
                         }
                     />
                 </Routes>
