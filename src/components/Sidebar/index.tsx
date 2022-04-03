@@ -16,7 +16,7 @@ const Sidebar = () => {
                 <div className={styles.road}>
                     <div className={styles.icon}>
                         <LocalShippingIcon />
-                        <ElderlyIcon className={styles.zombieIcon} />
+                        <ElderlyIcon className={styles.humanIcon} />
                     </div>
                     <span className={styles.line} />
                     <div className={styles.icon2}>

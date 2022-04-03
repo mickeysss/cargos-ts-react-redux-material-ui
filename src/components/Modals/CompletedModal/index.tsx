@@ -14,6 +14,7 @@ import Modal from '@mui/material/Modal';
 import { Input, InputLabel } from '@mui/material';
 
 import styles from './styles.modules.scss';
+import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
 
 const style = {
     position: 'absolute' as const,
@@ -135,7 +136,12 @@ const CompletedModal = ({
                     onChange={(e) => onChangeHandler(e)}
                 />
                 <div style={{ marginTop: '20px' }}>
-                    <Button onClick={completeHandler} variant="outlined">
+                    <Button
+                        style={buttonStyles}
+                        className={styles.button}
+                        onClick={completeHandler}
+                        variant="outlined"
+                    >
                         Confirm transit
                     </Button>
                 </div>
