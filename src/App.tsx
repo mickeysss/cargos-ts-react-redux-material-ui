@@ -1,26 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { Routes, Route } from 'react-router-dom';
+
+import CargosPage from './pages/CargosPage';
+import TransitsPage from './pages/TransitsPage';
+
+import { Sidebar } from './components';
+
+import './assets/styles/_global.scss';
+import styles from './styles.module.scss';
+import StatisticPage from './pages/StatisticPage';
+import { cargoType } from './store/reducers/cargos-reducer/types';
+
+const App = () => {
+    const [error, setError] = useState('');
+
+    const [selectedCargo, setSelectedCargo] = useState<cargoType>({
+        category: '',
+        id: 0,
+        position: '',
+        cargoNumber: '',
+        status: '',
+        destinationFrom: '',
+        destinationTo: '',
+        attention: '-',
+        quantity: 0,
+    });
+
+    return (
+        <div className={styles.appContainer}>
+            <Sidebar />
+            <div>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <CargosPage
+                                error={error}
+                                setError={setError}
+                                selectedCargo={selectedCargo}
+                                setSelectedCargo={setSelectedCargo}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/transits"
+                        element={
+                            <TransitsPage
+                                error={error}
+                                setError={setError}
+                                selectedCargo={selectedCargo}
+                                setSelectedCargo={setSelectedCargo}
+                            />
+                        }
+                    />
+                    <Route path="/statistics" element={<StatisticPage />} />
+                </Routes>
+            </div>
+        </div>
+    );
+};
 
 export default App;

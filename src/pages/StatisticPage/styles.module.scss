@@ -1,0 +1,97 @@
+.main{
+  position: relative;
+  width: 85vw;
+  height: 100vh;
+}
+
+.heroBg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/imgs/statistics-hero.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.07;
+}
+
+.flexContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 50px;
+
+  .title {
+    color: #FFFFFF;
+    margin-bottom: 50px;
+  }
+}
+.tab{
+  font-family: IBM Plex Sans, sans-serif;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: white;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 6px 6px;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    background: transparent;
+  }
+
+  &:focus {
+    color: #fff;
+    border-radius: 3px;
+    outline: 2px solid #86641a;
+    outline-offset: 2px;
+  }
+
+}
+
+.tabList{
+  min-width: 320px;
+  background-color: blue;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: space-between;
+}
+
+.tabPanel{
+  width: 100%;
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 0.875rem;
+}
+
+.tab{
+  font-family: IBM Plex Sans, sans-serif;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: bold;
+  background-color: transparent;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 6px 6px;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(230, 209, 21,0.07);
+  }
+
+  &:focus {
+    color: #fff;
+    border-radius: 3px;
+    outline: 2px solid #d99f2c
+  }
+    outline-offset: 2px;
+  }
