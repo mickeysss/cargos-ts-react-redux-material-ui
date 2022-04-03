@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addCargoAction } from '../../../store/reducers/cargos-reducer/actions';
+import { editCargoAction } from '../../../store/reducers/cargos-reducer/actions';
+
+import { cargoType } from '../../../store/reducers/cargos-reducer/types';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-
 import { Input, InputLabel } from '@mui/material';
 
 const style = {
@@ -23,19 +24,19 @@ const style = {
 };
 
 type Props = {
+    selectedCargo: cargoType;
+    setSelectedCargo: Dispatch<SetStateAction<cargoType>>;
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
+    editHandler: Dispatch<SetStateAction<cargoType>>;
 };
 
-const CargoModal = ({ open, setOpen }: Props) => {
-    const [newCargo, setNewCargo] = useState({
-        id: 0,
-        name: '',
-        category: '',
-        quantity: 0,
-        status: 'In stock',
-    });
-
+const EditModal = ({
+    open,
+    setOpen,
+    selectedCargo,
+    setSelectedCargo,
+}: Props) => {
     const dispatch = useDispatch();
 
     const changeCargoHandler = (
@@ -43,16 +44,15 @@ const CargoModal = ({ open, setOpen }: Props) => {
     ) => {
         const { name, value } = e.target;
 
-        setNewCargo({ ...newCargo, id: Date.now(), [name]: value });
+        setSelectedCargo({ ...selectedCargo, [name]: value });
     };
 
-    const addCargoHandler = () => {
-        if (newCargo.category && newCargo.name && newCargo.quantity) {
-            dispatch(addCargoAction(newCargo));
+    const editCargoHandler = () => {
+        if (selectedCargo.id) {
+            dispatch(editCargoAction(selectedCargo));
             setOpen(false);
         }
     };
-
     return (
         <div>
             <Modal
@@ -62,11 +62,15 @@ const CargoModal = ({ open, setOpen }: Props) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <InputLabel htmlFor="name">Add name of cargo</InputLabel>
+                    <h1>Edit selected cargo</h1>
+
+                    <InputLabel htmlFor="cargoNumber">Cargo number</InputLabel>
                     <Input
-                        name="name"
+                        name="cargoNumber"
                         type="string"
-                        onChange={(e) => changeCargoHandler(e)}
+                        defaultValue={selectedCargo.cargoNumber}
+                        readOnly={true}
+                        disabled={true}
                     />
                     <InputLabel htmlFor="category">
                         Category of cargo
@@ -74,17 +78,19 @@ const CargoModal = ({ open, setOpen }: Props) => {
                     <Input
                         name="category"
                         type="string"
+                        defaultValue={selectedCargo.category}
                         onChange={(e) => changeCargoHandler(e)}
                     />
-                    <InputLabel htmlFor="quantity">Quantity</InputLabel>
+                    <InputLabel htmlFor="name">Add cargo position</InputLabel>
                     <Input
-                        name="quantity"
-                        type="number"
+                        name="position"
+                        type="string"
+                        defaultValue={selectedCargo.position}
                         onChange={(e) => changeCargoHandler(e)}
                     />
                     <div style={{ marginTop: '20px' }}>
-                        <Button onClick={addCargoHandler} variant="outlined">
-                            Add cargo
+                        <Button onClick={editCargoHandler} variant="outlined">
+                            Edit Cargo
                         </Button>
                     </div>
                 </Box>
@@ -93,4 +99,4 @@ const CargoModal = ({ open, setOpen }: Props) => {
     );
 };
 
-export default CargoModal;
+export default EditModal;

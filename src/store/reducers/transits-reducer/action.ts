@@ -1,6 +1,11 @@
-import { ADD_TRANSIT_CARGO, COMPLETE_TRANSIT_CARGO, transitCargoType } from './types';
+import {
+    ADD_TRANSIT_CARGO,
+    COMPLETE_TRANSIT_CARGO,
+    transitCargoType,
+} from './types';
+import { cargoType } from '../cargos-reducer/types';
 
-export const addTransitCargoAction = (data: transitCargoType) => ({
+export const addTransitCargoAction = (data: cargoType) => ({
     type: ADD_TRANSIT_CARGO,
     payload: data,
 });

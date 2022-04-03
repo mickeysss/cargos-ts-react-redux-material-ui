@@ -1,15 +1,18 @@
 export type transitCargoType = {
     id: number;
-    name: string;
+    position: string;
+    cargoNumber: string;
     category: string;
     quantity: number;
     status: string;
+    destinationFrom?: string;
+    destinationTo?: string;
     destination?: string;
     attention?: string | number;
 };
 
 export type addTransitCargoType = {
-    type: typeof ADD_TRANSIT_CARGO
+    type: typeof ADD_TRANSIT_CARGO;
     payload: transitCargoType;
 };
 
@@ -21,4 +24,4 @@ export type completeTransitCargoType = {
 export const ADD_TRANSIT_CARGO = 'ADD_TRANSIT_CARGO';
 export const COMPLETE_TRANSIT_CARGO = 'COMPLETE_TRANSIT_CARGO';
 
-export type actionTypes = addTransitCargoType | completeTransitCargoType
+export type actionTypes = addTransitCargoType | completeTransitCargoType;

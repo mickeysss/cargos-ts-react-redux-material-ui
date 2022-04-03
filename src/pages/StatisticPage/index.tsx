@@ -1,20 +1,23 @@
 import * as React from 'react';
 
+import { useSelector } from 'react-redux';
+
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import { TabsList } from './components/TabsList';
 import { Tab } from './components/Tab';
 import { TabPanel } from './components/TabPanel';
 
-import styles from './styles.module.scss';
-import { useSelector } from 'react-redux';
 import { AppRootStateType } from '../../store/reducers';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
-import { cargoType } from '../../store/reducers/cargos-reducer/types';
+import { commonCargosTypes } from '../../store/reducers/cargos-reducer/types';
+
+import styles from './styles.module.scss';
 
 const StatisticPage = () => {
-    const cargos = useSelector<AppRootStateType, cargoType[]>(
+    const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
         (state) => state.cargos
     );
+    const { cargos } = commonCargos;
 
     const transitCargos = useSelector<AppRootStateType, transitCargoType[]>(
         (state) => state.transitCargo
@@ -44,7 +47,7 @@ const StatisticPage = () => {
                             {stockCargos.map((item) => (
                                 <div key={item.id}>
                                     <span>
-                                        {item.name || 'No stock cargos'}
+                                        {item.position || 'No stock cargos'}
                                     </span>
                                 </div>
                             ))}
@@ -56,7 +59,7 @@ const StatisticPage = () => {
                         <h2>In transit</h2>
                         {inTransit.map((item) => (
                             <div key={item.id}>
-                                <span>{item.name || 'No in transits'}</span>
+                                <span>{item.position || 'No in transits'}</span>
                             </div>
                         ))}
                         <span>Total: </span>
@@ -66,7 +69,7 @@ const StatisticPage = () => {
                         <h2>Completed</h2>
                         {completedTransits.map((item) => (
                             <div key={item.id}>
-                                <span>{item.name || 'No completed'}</span>
+                                <span>{item.position || 'No completed'}</span>
                             </div>
                         ))}
 

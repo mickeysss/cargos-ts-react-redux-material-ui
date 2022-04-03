@@ -92,3 +92,20 @@
     100% { -webkit-transform: translateX(120%); transform: translateX(120%); }
   }
 }
+
+.humanIcon{
+  max-width: 20px;
+  max-height: 30px;
+  animation: spin3 .5s linear infinite;
+  margin-left: 30px;
+  svg {
+    position: relative;
+    bottom: -5px;
+
+  }
+
+  @keyframes spin3 {
+    0% { -webkit-transform: translateX(-1000%);  transform: rotate(-40deg);  }
+    100% { -webkit-transform: translateX(120%); transform: rotate(20deg); }
+  }
+}

@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { completeCargoAction } from '../../../store/reducers/transits-reducer/action';
 import { cargoType } from '../../../store/reducers/cargos-reducer/types';
 
+import { transitCargoType } from '../../../store/reducers/transits-reducer/types';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
@@ -30,8 +32,8 @@ type Props = {
     setOpen: Dispatch<SetStateAction<boolean>>;
     selectedCargo: cargoType;
     setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
-    setCompletedCargo: Dispatch<React.SetStateAction<cargoType>>;
-    completedCargo: cargoType;
+    setCompletedCargo: Dispatch<React.SetStateAction<transitCargoType>>;
+    completedCargo: transitCargoType;
     setError: Dispatch<React.SetStateAction<string>>;
 };
 
@@ -74,25 +76,42 @@ const CompletedModal = ({
         >
             <Box sx={style}>
                 <h2 style={{ marginBottom: '30px' }}>Confirm cargo transit</h2>
-                <InputLabel className={styles.textField} htmlFor="name">
-                    Destination
+                <InputLabel
+                    className={styles.textField}
+                    htmlFor="destinationFrom"
+                >
+                    Destination From
                 </InputLabel>
                 <Input
-                    name="name"
+                    name="destinationFrom"
                     type="string"
-                    value={completedCargo.destination}
-                    readOnly={true}
+                    value={completedCargo.destinationFrom}
+                    readOnly
                     className={styles.textField}
                     style={inputFieldStyles}
                 />
-                <InputLabel className={styles.textField} htmlFor="name">
-                    Name
+                <InputLabel
+                    className={styles.textField}
+                    htmlFor="destinationTo"
+                >
+                    Destination To
                 </InputLabel>
                 <Input
-                    name="name"
+                    name="destinationTo"
                     type="string"
-                    value={completedCargo.name}
-                    readOnly={true}
+                    value={completedCargo.destinationTo}
+                    readOnly
+                    className={styles.textField}
+                    style={inputFieldStyles}
+                />
+                <InputLabel className={styles.textField} htmlFor="position">
+                    Position
+                </InputLabel>
+                <Input
+                    name="position"
+                    type="string"
+                    value={completedCargo.position}
+                    readOnly
                     style={inputFieldStyles}
                     className={styles.textField}
                 />
@@ -101,7 +120,7 @@ const CompletedModal = ({
                     name="category"
                     type="string"
                     defaultValue={completedCargo.category}
-                    readOnly={true}
+                    readOnly
                     style={inputFieldStyles}
                     className={styles.textField}
                 />
