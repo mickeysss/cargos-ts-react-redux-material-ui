@@ -21,6 +21,7 @@ import {
     cargoType,
     commonCargosTypes,
 } from '../../../store/reducers/cargos-reducer/types';
+import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
 
 const style = {
     position: 'absolute' as const,
@@ -32,6 +33,7 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    outline: '#d99f2c',
 };
 
 type Props = {
@@ -173,7 +175,11 @@ const TransitModal = ({
                     </FormControl>
 
                     <div style={{ marginTop: '20px' }}>
-                        <Button onClick={addTransitHandler} variant="outlined">
+                        <Button
+                            style={buttonStyles}
+                            onClick={addTransitHandler}
+                            variant="outlined"
+                        >
                             Add transit
                         </Button>
                     </div>

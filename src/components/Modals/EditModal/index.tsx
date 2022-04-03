@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { Input, InputLabel } from '@mui/material';
+import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
 
 const style = {
     position: 'absolute' as const,
@@ -89,7 +90,11 @@ const EditModal = ({
                         onChange={(e) => changeCargoHandler(e)}
                     />
                     <div style={{ marginTop: '20px' }}>
-                        <Button onClick={editCargoHandler} variant="outlined">
+                        <Button
+                            style={buttonStyles}
+                            onClick={editCargoHandler}
+                            variant="outlined"
+                        >
                             Edit Cargo
                         </Button>
                     </div>
