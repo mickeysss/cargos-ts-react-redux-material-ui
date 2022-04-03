@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import { useDispatch } from 'react-redux';
 
@@ -10,8 +10,12 @@ import { addCargoAction } from '../../../store/reducers/cargos-reducer/actions';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { Input, InputLabel } from '@mui/material';
+import { TextField } from '@mui/material';
+
 import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
+import styles from './styles.module.scss';
+import { useFormik } from 'formik';
+import { cargoValidation } from '../../../helpers/validation';
 
 const style = {
     position: 'absolute' as const,
@@ -31,35 +35,27 @@ type Props = {
 };
 
 const AddCargoModal = ({ open, setOpen }: Props) => {
-    const [newCargo, setNewCargo] = useState({
-        id: 0,
-        position: '',
-        category: '',
-        status: 'In stock',
-        cargoNumber: '',
+    const formik = useFormik({
+        initialValues: {
+            position: '',
+            category: '',
+        },
+        validationSchema: cargoValidation,
+        onSubmit: (values) => {
+            dispatch(
+                addCargoAction({
+                    id: Date.now(),
+                    category: values.category,
+                    position: values.position,
+                    status: 'In Stock',
+                    cargoNumber: uniqid(),
+                })
+            );
+            setOpen(false);
+        },
     });
 
     const dispatch = useDispatch();
-
-    const changeCargoHandler = (
-        e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-    ) => {
-        const { name, value } = e.target;
-
-        setNewCargo({
-            ...newCargo,
-            id: Date.now(),
-            cargoNumber: uniqid(),
-            [name]: value,
-        });
-    };
-
-    const addCargoHandler = () => {
-        if (newCargo.id) {
-            dispatch(addCargoAction(newCargo));
-            setOpen(false);
-        }
-    };
 
     return (
         <div>
@@ -70,31 +66,57 @@ const AddCargoModal = ({ open, setOpen }: Props) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <InputLabel htmlFor="position">
-                        Add cargo position
-                    </InputLabel>
-                    <Input
-                        name="position"
-                        type="string"
-                        onChange={(e) => changeCargoHandler(e)}
-                    />
-                    <InputLabel htmlFor="category">
-                        Category of cargo
-                    </InputLabel>
-                    <Input
-                        name="category"
-                        type="string"
-                        onChange={(e) => changeCargoHandler(e)}
-                    />
-                    <div style={{ marginTop: '20px' }}>
-                        <Button
-                            style={buttonStyles}
-                            onClick={addCargoHandler}
-                            variant="outlined"
-                        >
-                            Add cargo
-                        </Button>
-                    </div>
+                    <h2 className={styles.modalTitle}>Add new cargo</h2>
+                    <form onSubmit={formik.handleSubmit}>
+                        <div className={styles.inputField}>
+                            <TextField
+                                fullWidth
+                                id="position"
+                                name="position"
+                                label="Position"
+                                value={formik.values.position}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.position &&
+                                    Boolean(formik.errors.position)
+                                }
+                                helperText={
+                                    formik.touched.position &&
+                                    formik.errors.position
+                                }
+                                type="string"
+                            />
+                        </div>
+
+                        <div className={styles.inputField}>
+                            <TextField
+                                fullWidth
+                                id="category"
+                                name="category"
+                                label="Category"
+                                value={formik.values.category}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.category &&
+                                    Boolean(formik.errors.category)
+                                }
+                                helperText={
+                                    formik.touched.category &&
+                                    formik.errors.category
+                                }
+                                type="string"
+                            />
+                        </div>
+                        <div className={styles.inputField}>
+                            <Button
+                                type="submit"
+                                style={buttonStyles}
+                                variant="outlined"
+                            >
+                                Add cargo
+                            </Button>
+                        </div>
+                    </form>
                 </Box>
             </Modal>
         </div>
