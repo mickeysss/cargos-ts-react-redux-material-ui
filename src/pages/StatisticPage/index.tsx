@@ -47,7 +47,7 @@ const StatisticPage = () => {
                             {stockCargos.map((item) => (
                                 <div key={item.id}>
                                     <span>
-                                        {item.name || 'No stock cargos'}
+                                        {item.position || 'No stock cargos'}
                                     </span>
                                 </div>
                             ))}
@@ -59,7 +59,7 @@ const StatisticPage = () => {
                         <h2>In transit</h2>
                         {inTransit.map((item) => (
                             <div key={item.id}>
-                                <span>{item.name || 'No in transits'}</span>
+                                <span>{item.position || 'No in transits'}</span>
                             </div>
                         ))}
                         <span>Total: </span>
@@ -69,7 +69,7 @@ const StatisticPage = () => {
                         <h2>Completed</h2>
                         {completedTransits.map((item) => (
                             <div key={item.id}>
-                                <span>{item.name || 'No completed'}</span>
+                                <span>{item.position || 'No completed'}</span>
                             </div>
                         ))}
 

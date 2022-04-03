@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,10 +11,11 @@ import {
 
 import Table from '../../components/Table';
 import TransitModal from '../../components/Modals/TransitModal';
-import CargoModal from '../../components/Modals/CargoModal';
+import CargoModal from '../../components/Modals/AddCargoModal';
+import EditModal from '../../components/Modals/EditModal';
 
 import Button from '@mui/material/Button';
-import { GridColumns, GridPreProcessEditCellProps } from '@mui/x-data-grid';
+import { GridColumns } from '@mui/x-data-grid';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { AddLocation, Delete, EditLocationAlt } from '@mui/icons-material';
 
@@ -22,47 +23,35 @@ import styles from './styles.module.scss';
 
 const columns: GridColumns = [
     {
+        field: 'cargoNumber',
+        headerName: 'Cargo number',
+        width: 270,
+        type: 'number',
+        editable: true,
+        align: 'left',
+        headerAlign: 'left',
+    },
+    {
         field: 'status',
         headerName: 'Status',
-        width: 300,
+        width: 270,
         type: 'string',
         align: 'left',
         headerAlign: 'left',
     },
     {
-        field: 'name',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value.length < 3;
-            return { ...params.props, error: hasError };
-        },
-        headerName: 'Name',
-        width: 300,
+        field: 'position',
+        headerName: 'Position',
+        width: 270,
         editable: true,
         align: 'left',
         headerAlign: 'left',
     },
     {
         field: 'category',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value.length < 3;
-            return { ...params.props, error: hasError };
-        },
         headerName: 'Category',
-        width: 300,
+        width: 270,
         type: 'string',
-        editable: true,
-        align: 'left',
-        headerAlign: 'left',
-    },
-    {
-        field: 'quantity',
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-            const hasError = params.props.value < 0;
-            return { ...params.props, error: hasError };
-        },
-        headerName: 'Quantity',
-        width: 300,
-        type: 'number',
         editable: true,
         align: 'left',
         headerAlign: 'left',
@@ -82,8 +71,10 @@ const CargosPage = ({
     selectedCargo,
     setSelectedCargo,
 }: Props) => {
+    const [errorTransit, setErrorTransit] = useState<string>('');
     const [openCargo, setOpenCargo] = React.useState(false);
     const [openTransit, setOpenTransit] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
 
     const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
         (state) => state.cargos
@@ -93,20 +84,39 @@ const CargosPage = ({
     const dispatch = useDispatch();
 
     const onOpenModalHandler = () => {
-        selectedCargo.id && setOpenTransit(true);
+        if (selectedCargo.id) {
+            setOpenTransit(true);
+        } else {
+            setError('');
+            setErrorTransit('Please select item');
+            setSelectedCargo({ ...selectedCargo, id: 0 });
+        }
     };
 
+    const addHandler = () => {
+        setOpenCargo(true);
+    };
     const removeHandler = () => {
-        dispatch(removeCargoAction(selectedCargo));
+        if (selectedCargo.id) {
+            dispatch(removeCargoAction(selectedCargo));
+            setSelectedCargo({
+                category: '',
+                id: 0,
+                quantity: 0,
+                cargoNumber: '',
+                position: '',
+                status: '',
+            });
+        } else {
+            setError('Please select item');
+            setErrorTransit('');
+        }
+    };
 
-        setSelectedCargo({
-            category: '',
-            id: 0,
-            name: '',
-            quantity: 0,
-            status: '',
-            destination: '',
-        });
+    const editHandler = () => {
+        if (selectedCargo.id) {
+            setOpenEdit(true);
+        }
     };
 
     return (
@@ -121,22 +131,31 @@ const CargosPage = ({
                         setSelectedRow={setSelectedCargo}
                         columns={columns}
                         setError={setError}
+                        setErrorTransit={setErrorTransit}
                     />
                 </div>
                 <div className={styles.tableButtonContainer}>
-                    <Button onClick={() => setOpenCargo(true)}>
+                    <Button onClick={addHandler}>
                         <AddBoxIcon />
                         <div>Add cargo</div>
                     </Button>
                     <CargoModal open={openCargo} setOpen={setOpenCargo} />
-                    <Button>
+                    <Button onClick={editHandler}>
                         <EditLocationAlt />
                         <span>Edit cargo</span>
                     </Button>
+                    <EditModal
+                        selectedCargo={selectedCargo}
+                        setSelectedCargo={setSelectedCargo}
+                        open={openEdit}
+                        setOpen={setOpenEdit}
+                        editHandler={editHandler}
+                    />
                     <Button onClick={removeHandler}>
                         <Delete />
                         <span>Remove cargo</span>
                     </Button>
+                    {error && <div style={styles.error}>{error}</div>}
                 </div>
 
                 <div className={styles.buttonContainer}>
@@ -148,14 +167,16 @@ const CargosPage = ({
                         <div>Add transit</div>
                     </Button>
                     <TransitModal
+                        selectedCargo={selectedCargo}
                         open={openTransit}
                         setOpen={setOpenTransit}
                         setError={setError}
-                        selectedCargo={selectedCargo}
                         setSelectedCargo={setSelectedCargo}
                     />
+                    {errorTransit && (
+                        <div style={{ color: '#FFFFFF' }}>{errorTransit}</div>
+                    )}
                 </div>
-                {error && <div style={{ color: '#FFFFFF' }}>{error}</div>}
             </div>
         </div>
     );

@@ -17,7 +17,6 @@ import {
 
 import { AppRootStateType } from '../../../store/reducers';
 import { addTransitCargoAction } from '../../../store/reducers/transits-reducer/action';
-import { transitCargoType } from '../../../store/reducers/transits-reducer/types';
 import {
     cargoType,
     commonCargosTypes,
@@ -38,7 +37,7 @@ const style = {
 type Props = {
     open: boolean;
     setOpen: Dispatch<React.SetStateAction<boolean>>;
-    selectedCargo: transitCargoType;
+    selectedCargo: cargoType;
     setSelectedCargo: Dispatch<React.SetStateAction<cargoType>>;
     setError: Dispatch<React.SetStateAction<string>>;
 };
@@ -61,7 +60,6 @@ const TransitModal = ({
             | SelectChangeEvent
     ) => {
         const { name, value } = e.target;
-
         setSelectedCargo({
             ...selectedCargo,
             id: Date.now(),
@@ -79,8 +77,8 @@ const TransitModal = ({
         setSelectedCargo({
             category: '',
             id: 0,
-            name: '',
-            quantity: 0,
+            position: '',
+            cargoNumber: '',
             status: '',
             destination: '',
             attention: '',
@@ -108,9 +106,9 @@ const TransitModal = ({
                 <Box sx={style}>
                     <InputLabel htmlFor="name">Name</InputLabel>
                     <Input
-                        name="name"
+                        name="position"
                         type="string"
-                        value={selectedCargo.name}
+                        value={selectedCargo.position}
                         readOnly={true}
                         style={inputFieldStyles}
                     />
@@ -131,12 +129,12 @@ const TransitModal = ({
                     />
                     <FormControl fullWidth>
                         <InputLabel id="destination">
-                            Choose destination
+                            Choose destination from
                         </InputLabel>
                         <Select
                             labelId="destination"
                             id="destination"
-                            name="destination"
+                            name="destinationFrom"
                             label="Choose department"
                             onChange={(e: SelectChangeEvent) =>
                                 selectedCargoHandler(e)
@@ -151,6 +149,29 @@ const TransitModal = ({
                             ))}
                         </Select>
                     </FormControl>
+                    <FormControl fullWidth>
+                        <InputLabel id="destination">
+                            Choose destination to
+                        </InputLabel>
+                        <Select
+                            labelId="destinationTo"
+                            id="destination"
+                            name="destinationTo"
+                            label="Choose department"
+                            onChange={(e: SelectChangeEvent) =>
+                                selectedCargoHandler(e)
+                            }
+                            defaultValue=""
+                            style={inputFieldStyles}
+                        >
+                            {destinations?.map((destination, i) => (
+                                <MenuItem key={i} value={destination}>
+                                    {destination}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
                     <div style={{ marginTop: '20px' }}>
                         <Button onClick={addTransitHandler} variant="outlined">
                             Add transit

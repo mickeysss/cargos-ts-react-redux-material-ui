@@ -1,11 +1,14 @@
 export type cargoType = {
     id: number;
-    name: string;
+    position: string;
     category: string;
-    quantity: number;
     status: string;
+    cargoNumber: string;
+    destinationFrom?: string;
+    destinationTo?: string;
     destination?: string;
     attention?: string | number;
+    quantity?: 0;
 };
 
 export type commonCargosTypes = {

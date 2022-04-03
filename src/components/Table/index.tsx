@@ -1,7 +1,10 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+
 import { ThemeProvider } from '@emotion/react';
-import { DataGrid, GridColumns } from '@mui/x-data-grid';
+
+import { DataGrid, GridColumns, GridRowParams } from '@mui/x-data-grid';
 import { createTheme } from '@mui/material';
+
 import { useStyles } from '../../hooks/useStyles';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
 import { cargoType } from '../../store/reducers/cargos-reducer/types';
@@ -11,27 +14,48 @@ const theme = createTheme({
         mode: 'dark',
     },
 });
+
 type Props = {
-    selectedRow: cargoType;
+    selectedRow: cargoType | transitCargoType;
     rows: cargoType[] | transitCargoType[];
     columns: GridColumns;
-    setSelectedRow: Dispatch<React.SetStateAction<cargoType>>;
+    setSelectedRow:
+        | Dispatch<React.SetStateAction<cargoType>>
+        | Dispatch<React.SetStateAction<transitCargoType>>;
     setError: Dispatch<React.SetStateAction<string>>;
+    setErrorTransit?: Dispatch<React.SetStateAction<string>>;
 };
 
-const Table = ({ rows, columns, selectedRow, setSelectedRow }: Props) => {
+const Table = ({
+    rows,
+    setError,
+    columns,
+    selectedRow,
+    setSelectedRow,
+    setErrorTransit,
+}: Props) => {
     const classes = useStyles();
+
+    const onRowClickHandler = (e: GridRowParams<{ [key: string]: any }>) => {
+        setError ? setError('') : null;
+        setErrorTransit ? setErrorTransit('') : null;
+
+        selectedRow
+            ? setSelectedRow(
+                  e.row as SetStateAction<cargoType> &
+                      SetStateAction<transitCargoType>
+              )
+            : null;
+    };
 
     return (
         <div style={{ height: 400, width: '100%', color: 'white' }}>
             <ThemeProvider theme={theme}>
                 <DataGrid
-                    rows={rows}
+                    rows={rows as cargoType[]}
                     columns={columns}
                     experimentalFeatures={{ newEditingApi: true }}
-                    onRowClick={(e) =>
-                        selectedRow ? setSelectedRow(e.row as cargoType) : null
-                    }
+                    onRowClick={(e) => onRowClickHandler(e)}
                     classes={classes}
                 />
             </ThemeProvider>

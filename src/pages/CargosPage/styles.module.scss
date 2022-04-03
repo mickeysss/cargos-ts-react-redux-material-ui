@@ -40,7 +40,7 @@
 }
 
 .buttonContainer{
-  margin: 120px auto;
+  margin: 20px auto;
   max-width: 300px;
   display: flex;
   flex-direction: column;
@@ -67,15 +67,19 @@
 
 .tableButtonContainer{
   margin-top: 10px;
-  justify-content: space-between;
+  justify-content: end;
   display: flex;
-  float: right;
+  align-items: center;
+  //float: right;
 
   button{
     margin-left: 15px;
     display: flex;
     flex-direction: column;
     color: #d99f2c;
+    :nth-of-type(1){
+      margin-left: 0;
+    }
   }
 
   svg{
@@ -85,4 +89,8 @@
   button:hover{
     background: rgba(230, 209, 21,0.07);
   }
+}
+
+.error{
+  text-align: center;
 }
