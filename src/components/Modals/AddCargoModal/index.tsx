@@ -16,18 +16,7 @@ import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyl
 import styles from './styles.module.scss';
 import { useFormik } from 'formik';
 import { cargoValidation } from '../../../helpers/validation';
-
-const style = {
-    position: 'absolute' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+import { boxStyles } from '../../../pages/StatisticPage/components/boxStyles';
 
 type Props = {
     open: boolean;
@@ -65,7 +54,7 @@ const AddCargoModal = ({ open, setOpen }: Props) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={boxStyles}>
                     <h2 className={styles.modalTitle}>Add new cargo</h2>
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.inputField}>
