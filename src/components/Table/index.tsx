@@ -32,13 +32,11 @@ const Table = ({
     columns,
     selectedRow,
     setSelectedRow,
-    setErrorTransit,
 }: Props) => {
     const classes = useStyles();
 
     const onRowClickHandler = (e: GridRowParams<{ [key: string]: any }>) => {
         setError ? setError('') : null;
-        setErrorTransit ? setErrorTransit('') : null;
 
         selectedRow
             ? setSelectedRow(
@@ -54,7 +52,6 @@ const Table = ({
                 <DataGrid
                     rows={rows as cargoType[]}
                     columns={columns}
-                    experimentalFeatures={{ newEditingApi: true }}
                     onRowClick={(e) => onRowClickHandler(e)}
                     classes={classes}
                 />
