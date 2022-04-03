@@ -163,7 +163,7 @@ const CargosPage = ({
                         className={styles.button}
                         onClick={onOpenModalHandler}
                     >
-                        <AddLocation />
+                        <AddLocation className={styles.transitIcon} />
                         <div>Add transit</div>
                     </Button>
                     <TransitModal

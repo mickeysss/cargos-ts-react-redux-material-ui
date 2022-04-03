@@ -8,7 +8,7 @@ export type cargoType = {
     destinationTo?: string;
     destination?: string;
     attention?: string | number;
-    quantity?: 0;
+    quantity?: number;
 };
 
 export type commonCargosTypes = {
