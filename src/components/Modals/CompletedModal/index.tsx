@@ -1,32 +1,29 @@
 import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { completeCargoAction } from '../../../store/reducers/transits-reducer/action';
-import { cargoType } from '../../../store/reducers/cargos-reducer/types';
+import {
+    completeCargoAction,
+    editTransitCargoAction,
+} from '../../../store/reducers/transits-reducer/action';
+import {
+    cargoType,
+    commonCargosTypes,
+} from '../../../store/reducers/cargos-reducer/types';
 
 import { transitCargoType } from '../../../store/reducers/transits-reducer/types';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { Input, InputLabel } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 
-import styles from './styles.modules.scss';
 import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
-
-const style = {
-    position: 'absolute' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+import { useFormik } from 'formik';
+import { transitValidation } from '../../../helpers/validation';
+import { AppRootStateType } from '../../../store/reducers';
+import styles from '../styles.module.scss';
 
 type Props = {
     open: boolean;
@@ -36,36 +33,67 @@ type Props = {
     setCompletedCargo: Dispatch<React.SetStateAction<transitCargoType>>;
     completedCargo: transitCargoType;
     setError: Dispatch<React.SetStateAction<string>>;
+    type: string;
 };
 
-const inputFieldStyles = {
-    marginBottom: '20px',
-};
+const CompletedModal = ({ type, open, setOpen, completedCargo }: Props) => {
+    const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
+        (state) => state.cargos
+    );
+    const { destinations } = commonCargos;
 
-const CompletedModal = ({
-    open,
-    setOpen,
-    completedCargo,
-    setCompletedCargo,
-}: Props) => {
     const dispatch = useDispatch();
 
-    const onChangeHandler = (
-        e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-    ) => {
-        const { name, value } = e.target;
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            position: completedCargo.position,
+            category: completedCargo.category,
+            destinationFrom: completedCargo.destinationFrom,
+            destinationTo: completedCargo.destinationTo,
+            quantity: completedCargo.quantity,
+        },
+        validationSchema: transitValidation,
+        onSubmit: (values) => {
+            switch (type) {
+                case 'confirmation':
+                    dispatch(
+                        completeCargoAction({
+                            id: completedCargo.id,
+                            cargoNumber: completedCargo.cargoNumber,
+                            category: values.category,
+                            position: values.position,
+                            destinationFrom: values.destinationFrom,
+                            destinationTo: values.destinationTo,
+                            quantity: values.quantity,
+                            status: 'In transit',
+                        })
+                    );
+                    onCloseCompletedHandler();
+                    break;
 
-        setCompletedCargo({ ...completedCargo, [name]: value });
-    };
+                case 'editing':
+                    dispatch(
+                        editTransitCargoAction({
+                            id: completedCargo.id,
+                            cargoNumber: completedCargo.cargoNumber,
+                            category: values.category,
+                            position: values.position,
+                            destinationFrom: values.destinationFrom,
+                            destinationTo: values.destinationTo,
+                            quantity: values.quantity,
+                            status: 'In transit',
+                            attention: '-',
+                        })
+                    );
+                    onCloseCompletedHandler();
+                    break;
+            }
+        },
+    });
 
     const onCloseCompletedHandler = () => {
         setOpen(false);
-    };
-
-    const completeHandler = () => {
-        dispatch(completeCargoAction(completedCargo));
-
-        onCloseCompletedHandler();
     };
 
     return (
@@ -75,76 +103,135 @@ const CompletedModal = ({
             aria-describedby="modal-modal-description"
             open={open}
         >
-            <Box sx={style}>
-                <h2 style={{ marginBottom: '30px' }}>Confirm cargo transit</h2>
-                <InputLabel
-                    className={styles.textField}
-                    htmlFor="destinationFrom"
-                >
-                    Destination From
-                </InputLabel>
-                <Input
-                    name="destinationFrom"
-                    type="string"
-                    value={completedCargo.destinationFrom}
-                    readOnly
-                    className={styles.textField}
-                    style={inputFieldStyles}
-                />
-                <InputLabel
-                    className={styles.textField}
-                    htmlFor="destinationTo"
-                >
-                    Destination To
-                </InputLabel>
-                <Input
-                    name="destinationTo"
-                    type="string"
-                    value={completedCargo.destinationTo}
-                    readOnly
-                    className={styles.textField}
-                    style={inputFieldStyles}
-                />
-                <InputLabel className={styles.textField} htmlFor="position">
-                    Position
-                </InputLabel>
-                <Input
-                    name="position"
-                    type="string"
-                    value={completedCargo.position}
-                    readOnly
-                    style={inputFieldStyles}
-                    className={styles.textField}
-                />
-                <InputLabel htmlFor="category">Category</InputLabel>
-                <Input
-                    name="category"
-                    type="string"
-                    defaultValue={completedCargo.category}
-                    readOnly
-                    style={inputFieldStyles}
-                    className={styles.textField}
-                />
-                <InputLabel className={styles.textField} htmlFor="quantity">
-                    Confirm quantity
-                </InputLabel>
-                <Input
-                    name="quantity"
-                    type="number"
-                    style={inputFieldStyles}
-                    defaultValue={completedCargo.quantity}
-                    onChange={(e) => onChangeHandler(e)}
-                />
-                <div style={{ marginTop: '20px' }}>
-                    <Button
-                        style={buttonStyles}
-                        className={styles.button}
-                        onClick={completeHandler}
-                        variant="outlined"
-                    >
-                        Confirm transit
-                    </Button>
-                </div>
+            <Box className={styles.box}>
+                <h2 className={styles.inputField}>
+                    {type === 'editing' && 'Edit transit'}
+                    {type === 'confirmation' && 'Confirm cargo transit'}
+                </h2>
+                <form onSubmit={formik.handleSubmit}>
+                    <div className={styles.inputField}>
+                        <TextField
+                            select
+                            fullWidth
+                            name="destinationFrom"
+                            label="Destination From"
+                            value={formik.values.destinationFrom}
+                            onChange={formik.handleChange}
+                            error={
+                                formik.touched.destinationFrom &&
+                                Boolean(formik.errors.position)
+                            }
+                            helperText={
+                                formik.touched.position &&
+                                formik.errors.position
+                            }
+                            type="string"
+                            disabled={type === 'confirmation' && true}
+                        >
+                            {destinations?.map((destination, i) => (
+                                <MenuItem key={i} value={destination}>
+                                    {destination}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </div>
+                    <div className={styles.inputField}>
+                        <TextField
+                            select
+                            fullWidth
+                            id="destinationTo"
+                            name="destinationTo"
+                            label="Choose department To"
+                            value={formik.values.destinationTo}
+                            onChange={formik.handleChange}
+                            error={
+                                formik.touched.destinationTo &&
+                                Boolean(formik.errors.destinationTo)
+                            }
+                            helperText={
+                                formik.touched.destinationTo &&
+                                formik.errors.destinationTo
+                            }
+                            type="string"
+                            disabled={type === 'confirmation' && true}
+                        >
+                            {destinations?.map((destination, i) => (
+                                <MenuItem key={i} value={destination}>
+                                    {destination}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </div>
+                    <div className={styles.inputField}>
+                        <TextField
+                            fullWidth
+                            id="position"
+                            name="position"
+                            label="Position"
+                            value={formik.values.position}
+                            onChange={formik.handleChange}
+                            error={
+                                formik.touched.position &&
+                                Boolean(formik.errors.position)
+                            }
+                            helperText={
+                                formik.touched.position &&
+                                formik.errors.position
+                            }
+                            type="string"
+                            disabled={type === 'confirmation' && true}
+                        />
+                    </div>
+                    <div className={styles.inputField}>
+                        <TextField
+                            fullWidth
+                            id="category"
+                            name="category"
+                            label="Category"
+                            value={formik.values.category}
+                            onChange={formik.handleChange}
+                            error={
+                                formik.touched.category &&
+                                Boolean(formik.errors.category)
+                            }
+                            helperText={
+                                formik.touched.category &&
+                                formik.errors.category
+                            }
+                            type="string"
+                            disabled={type === 'confirmation' && true}
+                        />
+                    </div>
+                    <div className={styles.inputField}>
+                        <TextField
+                            fullWidth
+                            id="quantity"
+                            name="quantity"
+                            label="Choose quantity"
+                            value={formik.values.quantity}
+                            onChange={formik.handleChange}
+                            error={
+                                formik.touched.quantity &&
+                                Boolean(formik.errors.quantity)
+                            }
+                            helperText={
+                                formik.touched.quantity &&
+                                formik.errors.quantity
+                            }
+                            type="number"
+                        />
+                    </div>
+                    <div className={styles.inputField}>
+                        <Button
+                            type={'submit'}
+                            style={buttonStyles}
+                            className={styles.button}
+                            variant="outlined"
+                        >
+                            Confirm transit
+                        </Button>
+                    </div>
+                </form>
             </Box>
         </Modal>
     );
