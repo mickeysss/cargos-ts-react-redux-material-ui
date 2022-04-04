@@ -97,6 +97,7 @@ const TransitModal = ({ selectedCargo, open, setOpen }: Props) => {
                                     formik.errors.position
                                 }
                                 type="string"
+                                disabled
                             />
                         </div>
                         <div className={styles.inputField}>
@@ -116,6 +117,7 @@ const TransitModal = ({ selectedCargo, open, setOpen }: Props) => {
                                     formik.errors.category
                                 }
                                 type="string"
+                                disabled
                             />
                         </div>
                         <div className={styles.inputField}>
