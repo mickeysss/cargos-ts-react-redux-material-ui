@@ -3,16 +3,21 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useFormik } from 'formik';
+
 import {
     completeCargoAction,
     editTransitCargoAction,
 } from '../../../store/reducers/transits-reducer/action';
+
 import {
     cargoType,
     commonCargosTypes,
 } from '../../../store/reducers/cargos-reducer/types';
-
+import { AppRootStateType } from '../../../store/reducers';
 import { transitCargoType } from '../../../store/reducers/transits-reducer/types';
+
+import { transitValidation } from '../../../helpers/validation';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -20,9 +25,7 @@ import Modal from '@mui/material/Modal';
 import { MenuItem, TextField } from '@mui/material';
 
 import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
-import { useFormik } from 'formik';
-import { transitValidation } from '../../../helpers/validation';
-import { AppRootStateType } from '../../../store/reducers';
+
 import styles from '../styles.module.scss';
 
 type Props = {
@@ -119,11 +122,11 @@ const CompletedModal = ({ type, open, setOpen, completedCargo }: Props) => {
                             onChange={formik.handleChange}
                             error={
                                 formik.touched.destinationFrom &&
-                                Boolean(formik.errors.position)
+                                Boolean(formik.errors.destinationFrom)
                             }
                             helperText={
-                                formik.touched.position &&
-                                formik.errors.position
+                                formik.touched.destinationFrom &&
+                                formik.errors.destinationFrom
                             }
                             type="string"
                             disabled={type === 'confirmation' && true}
