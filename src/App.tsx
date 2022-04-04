@@ -4,13 +4,12 @@ import { Routes, Route } from 'react-router-dom';
 
 import CargosPage from './pages/CargosPage';
 import TransitsPage from './pages/TransitsPage';
-
+import StatisticPage from './pages/StatisticPage';
 import { Sidebar } from './components';
 
-import './assets/styles/_global.scss';
-import StatisticPage from './pages/StatisticPage';
 import { cargoType } from './store/reducers/cargos-reducer/types';
 
+import './assets/styles/_global.scss';
 import styles from './styles.module.scss';
 
 const App = () => {
