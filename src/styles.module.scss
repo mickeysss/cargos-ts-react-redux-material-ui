@@ -1,7 +1,24 @@
 body{
   background: #151414;
 }
-.appContainer{
+.appContainer {
   display: flex;
   width: 100vw;
+
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+
+    .mainContainer{
+      margin-top: 10vh;
+      background-image: none;
+
+    }
+    .main{
+      width: 100vw;
+    }
+  }
 }
+
+
+

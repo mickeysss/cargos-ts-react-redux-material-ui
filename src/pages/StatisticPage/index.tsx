@@ -3,15 +3,20 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import TabsUnstyled from '@mui/base/TabsUnstyled';
-import { TabsList } from './components/TabsList';
-import { Tab } from './components/Tab';
-import { TabPanel } from './components/TabPanel';
+import { TabsList } from './components/Styles/TabsList';
+import { Tab } from './components/Styles/Tab';
+import { TabPanel } from './components/Styles/TabPanel';
 
 import { AppRootStateType } from '../../store/reducers';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
-import { commonCargosTypes } from '../../store/reducers/cargos-reducer/types';
+import {
+    cargoType,
+    commonCargosTypes,
+} from '../../store/reducers/cargos-reducer/types';
 
 import styles from './styles.module.scss';
+import BarChart from './components/Chart';
+import { checkGroup, ObjType } from '../../common/checkGroup.function';
 
 const StatisticPage = () => {
     const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
@@ -22,60 +27,63 @@ const StatisticPage = () => {
     const transitCargos = useSelector<AppRootStateType, transitCargoType[]>(
         (state) => state.transitCargo
     );
-    const completedTransits = transitCargos.filter(
+    const completedStatistics = transitCargos.filter(
         (item) => item.status === 'Completed'
     );
-    const inTransit = transitCargos.filter(
-        (item) => item.status === 'In transit'
+    const transitStatistics = transitCargos.filter(
+        (tr) => tr.status === 'In Transit'
     );
-    const stockCargos = cargos.filter((item) => item.status === 'In stock');
 
+    const totalNumberOfGroups = (el: cargoType[]) =>
+        checkGroup(el).reduce((acc, num) => acc + num.amount, 0);
+    const chartsArr = [
+        { component: cargos, title: 'In stock' },
+        { component: transitStatistics, title: 'In Transit' },
+        { component: completedStatistics, title: 'Completed' },
+    ];
+    console.log(transitCargos);
     return (
         <div className={styles.main}>
             <div className={styles.heroBg} />
             <div className={styles.flexContainer}>
-                <h1 className={styles.title}>Statistics history</h1>
-                <TabsUnstyled defaultValue={0}>
+                <h1 className={styles.title}>Statistics cargos</h1>
+                <TabsUnstyled className={styles.tabContainer} defaultValue={0}>
                     <TabsList>
-                        <Tab className={styles.tab}>In stock</Tab>
-                        <Tab className={styles.tab}>In transit</Tab>
-                        <Tab className={styles.tab}>Completed</Tab>
+                        {chartsArr.map((chartEl, i) => (
+                            <Tab key={i} className={styles.tab}>
+                                {chartEl.title}
+                            </Tab>
+                        ))}
                     </TabsList>
-                    <TabPanel value={0}>
-                        <>
-                            <h2>In stock</h2>
-                            {stockCargos.map((item) => (
-                                <div key={item.id}>
+                    {chartsArr.map((chartEl, i) => (
+                        <TabPanel key={i} value={i}>
+                            <>
+                                <h2 className={styles.subtitle}>
+                                    {chartEl.title}
+                                </h2>
+                                <div className={styles.mainStatistic}>
+                                    <div className={styles.barChart}>
+                                        <BarChart
+                                            cargos={
+                                                checkGroup(
+                                                    chartEl.component
+                                                ) as ObjType[]
+                                            }
+                                            valueField="amount"
+                                            argumentField="category"
+                                            name={chartEl.title}
+                                        />
+                                    </div>
+                                </div>
+                                <div className={styles.totalBlock}>
+                                    <span>Total items: </span>
                                     <span>
-                                        {item.position || 'No stock cargos'}
+                                        {totalNumberOfGroups(chartEl.component)}
                                     </span>
                                 </div>
-                            ))}
-                            <span>Total: </span>
-                            <span>{stockCargos.length}</span>
-                        </>
-                    </TabPanel>
-                    <TabPanel value={1}>
-                        <h2>In transit</h2>
-                        {inTransit.map((item) => (
-                            <div key={item.id}>
-                                <span>{item.position || 'No in transits'}</span>
-                            </div>
-                        ))}
-                        <span>Total: </span>
-                        <span>{inTransit.length}</span>
-                    </TabPanel>
-                    <TabPanel value={2}>
-                        <h2>Completed</h2>
-                        {completedTransits.map((item) => (
-                            <div key={item.id}>
-                                <span>{item.position || 'No completed'}</span>
-                            </div>
-                        ))}
-
-                        <span>Total: </span>
-                        <span>{completedTransits.length}</span>
-                    </TabPanel>
+                            </>
+                        </TabPanel>
+                    ))}
                 </TabsUnstyled>
             </div>
         </div>

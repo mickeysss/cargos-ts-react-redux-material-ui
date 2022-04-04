@@ -4,8 +4,6 @@ import { NavLink } from 'react-router-dom';
 
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
-import ElderlyIcon from '@mui/icons-material/Elderly';
-
 import styles from './styles.module.scss';
 
 const Sidebar = () => {
@@ -16,7 +14,6 @@ const Sidebar = () => {
                 <div className={styles.road}>
                     <div className={styles.icon}>
                         <LocalShippingIcon />
-                        <ElderlyIcon className={styles.humanIcon} />
                     </div>
                     <span className={styles.line} />
                     <div className={styles.icon2}>

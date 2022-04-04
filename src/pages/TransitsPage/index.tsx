@@ -5,17 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import CompletedModal from '../../components/Modals/CompletedModal';
 import Table from '../../components/Table';
 
+import { removeTransitCargoAction } from '../../store/reducers/transits-reducer/action';
 import { AppRootStateType } from '../../store/reducers';
 import { transitCargoType } from '../../store/reducers/transits-reducer/types';
 import { cargoType } from '../../store/reducers/cargos-reducer/types';
 
 import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Delete, EditLocationAlt } from '@mui/icons-material';
+
+import { transitColumns } from '../../mocks/mocks';
 
 import styles from '../TransitsPage/styles.module.scss';
-import { Delete, EditLocationAlt } from '@mui/icons-material';
-import { removeTransitCargoAction } from '../../store/reducers/transits-reducer/action';
-import { transitColumns } from '../../mocks/mocks';
 
 type Props = {
     error: string;
@@ -56,16 +57,6 @@ const TransitsPage = ({
             setType('confirmation');
             setOpen(true);
             setError('');
-            setCompletedCargo({
-                quantity: 0,
-                destinationFrom: '',
-                destinationTo: '',
-                category: '',
-                id: 0,
-                cargoNumber: '',
-                position: '',
-                status: '',
-            });
         } else {
             setError('Please select item');
         }
@@ -78,6 +69,7 @@ const TransitsPage = ({
             setError('Please select item');
         }
     };
+
     const changeHandler = () => {
         if (completedCargo.id) {
             setType('editing');
@@ -86,6 +78,7 @@ const TransitsPage = ({
             setError('Please select item');
         }
     };
+
     return (
         <div className={styles.main}>
             <div className={styles.heroBg} />
@@ -126,16 +119,6 @@ const TransitsPage = ({
                         <CheckCircleIcon />
                         <div>Confirm transit</div>
                     </Button>
-                    <CompletedModal
-                        type={type}
-                        open={open}
-                        setOpen={setOpen}
-                        setError={setError}
-                        selectedCargo={selectedCargo}
-                        setSelectedCargo={setSelectedCargo}
-                        completedCargo={completedCargo}
-                        setCompletedCargo={setCompletedCargo}
-                    />
                 </div>
             </div>
         </div>
