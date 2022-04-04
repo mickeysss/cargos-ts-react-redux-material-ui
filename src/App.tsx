@@ -8,9 +8,10 @@ import TransitsPage from './pages/TransitsPage';
 import { Sidebar } from './components';
 
 import './assets/styles/_global.scss';
-import styles from './styles.module.scss';
 import StatisticPage from './pages/StatisticPage';
 import { cargoType } from './store/reducers/cargos-reducer/types';
+
+import styles from './styles.module.scss';
 
 const App = () => {
     const [error, setError] = useState('');
@@ -30,7 +31,7 @@ const App = () => {
     return (
         <div className={styles.appContainer}>
             <Sidebar />
-            <div>
+            <div className={styles.mainContainer}>
                 <Routes>
                     <Route
                         path="/"
