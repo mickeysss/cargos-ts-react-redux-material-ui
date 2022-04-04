@@ -3,7 +3,11 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { useDispatch } from 'react-redux';
 
+import { useFormik } from 'formik';
+
 import uniqid from 'uniqid';
+
+import { cargoValidation } from '../../../helpers/validation';
 
 import { addCargoAction } from '../../../store/reducers/cargos-reducer/actions';
 
@@ -12,11 +16,9 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 
-import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
+import { boxStyles } from '../../../pages/StatisticPage/components/Styles/boxStyles';
+import { buttonStyles } from '../../../pages/StatisticPage/components/Styles/ButtonStyles';
 import styles from './styles.module.scss';
-import { useFormik } from 'formik';
-import { cargoValidation } from '../../../helpers/validation';
-import { boxStyles } from '../../../pages/StatisticPage/components/boxStyles';
 
 type Props = {
     open: boolean;
@@ -24,6 +26,8 @@ type Props = {
 };
 
 const AddCargoModal = ({ open, setOpen }: Props) => {
+    const dispatch = useDispatch();
+
     const formik = useFormik({
         initialValues: {
             position: '',
@@ -43,8 +47,6 @@ const AddCargoModal = ({ open, setOpen }: Props) => {
             setOpen(false);
         },
     });
-
-    const dispatch = useDispatch();
 
     return (
         <div>

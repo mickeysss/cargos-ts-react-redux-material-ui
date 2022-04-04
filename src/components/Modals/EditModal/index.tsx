@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 
-import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
+import { buttonStyles } from '../../../pages/StatisticPage/components/Styles/ButtonStyles';
 
 import styles from '../AddCargoModal/styles.module.scss';
 

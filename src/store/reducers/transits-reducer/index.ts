@@ -7,7 +7,52 @@ import {
     transitCargoType,
 } from './types';
 
-const initialState: transitCargoType[] = [];
+const initialState: transitCargoType[] = [
+    {
+        attention: '-',
+        cargoNumber: 'l1k7tzyh',
+        category: 'Vehicle',
+        destinationFrom: 'Moscow',
+        destinationTo: 'Krasnodar',
+        id: 1649049147660,
+        position: 'Cars',
+        quantity: 50,
+        status: 'In Transit',
+    },
+    {
+        attention: '-',
+        cargoNumber: 'z1k7tzy',
+        category: 'Material',
+        destinationFrom: 'Rostov',
+        destinationTo: 'Moscow',
+        id: 1649049147661,
+        position: 'Cotton',
+        quantity: 500,
+        status: 'In Transit',
+    },
+    {
+        attention: '-',
+        cargoNumber: 'y1k7tzy',
+        category: 'Meal',
+        destinationFrom: 'Krasnodar',
+        destinationTo: 'Moscow',
+        id: 1649049147663,
+        position: 'Lays',
+        quantity: 300,
+        status: 'Completed',
+    },
+    {
+        attention: '-',
+        cargoNumber: 'y3k7tzy',
+        category: 'Meal',
+        destinationFrom: 'Rostov',
+        destinationTo: 'Moscow',
+        id: 1649049147664,
+        position: 'Bananas',
+        quantity: 300,
+        status: 'Completed',
+    },
+];
 
 export const transitCargoReducer = (
     state = initialState,
