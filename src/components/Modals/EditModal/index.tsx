@@ -18,19 +18,8 @@ import { TextField } from '@mui/material';
 
 import { buttonStyles } from '../../../pages/StatisticPage/components/Styles/ButtonStyles';
 
+import { boxStyles } from '../../../pages/StatisticPage/components/Styles/boxStyles';
 import styles from '../AddCargoModal/styles.module.scss';
-
-const style = {
-    position: 'absolute' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 
 type Props = {
     selectedCargo: cargoType;
@@ -72,7 +61,7 @@ const EditModal = ({ open, setOpen, selectedCargo }: Props) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={boxStyles}>
                     <h2 className={styles.modalTitle}>Edit selected cargo</h2>
                     <form onSubmit={formik.handleSubmit}>
                         <div className={styles.inputField}>
