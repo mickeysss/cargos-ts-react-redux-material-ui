@@ -6,6 +6,34 @@
   width: 15vw;
   min-width: 150px;
   border-right: .5px solid rgb(71, 53, 16);
+  z-index: 10;
+@media screen and (max-width: 767px)  {
+ display: flex;
+ position: fixed;
+  height: 10vh;
+  width: 100vw;
+  .logoContainer{
+    display: none;
+  }
+  .navbar{
+
+    padding: 0 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    :first-child{
+      padding: 0;
+    }
+
+    .navItem{
+      margin-bottom: 0;
+      text-align: center;
+    }
+  }
+}
 
   h1{
     padding: 20px;
