@@ -2,6 +2,10 @@ import * as React from 'react';
 
 import { useSelector } from 'react-redux';
 
+import { checkGroup, ObjType } from '../../common/checkGroup.function';
+
+import BarChart from './components/Chart';
+
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import { TabsList } from './components/Styles/TabsList';
 import { Tab } from './components/Styles/Tab';
@@ -15,8 +19,6 @@ import {
 } from '../../store/reducers/cargos-reducer/types';
 
 import styles from './styles.module.scss';
-import BarChart from './components/Chart';
-import { checkGroup, ObjType } from '../../common/checkGroup.function';
 
 const StatisticPage = () => {
     const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(

@@ -18,8 +18,9 @@ import Button from '@mui/material/Button';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { AddLocation, Delete, EditLocationAlt } from '@mui/icons-material';
 
-import styles from './styles.module.scss';
 import { cargoColumns } from '../../mocks/mocks';
+
+import styles from './styles.module.scss';
 
 type Props = {
     selectedCargo: cargoType;
