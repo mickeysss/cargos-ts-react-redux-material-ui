@@ -3,6 +3,10 @@ import { Dispatch } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useFormik } from 'formik';
+
+import { transitValidation } from '../../../helpers/validation';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
@@ -14,9 +18,8 @@ import {
     cargoType,
     commonCargosTypes,
 } from '../../../store/reducers/cargos-reducer/types';
-import { buttonStyles } from '../../../pages/StatisticPage/components/ButtonStyles';
-import { useFormik } from 'formik';
-import { transitValidation } from '../../../helpers/validation';
+
+import { buttonStyles } from '../../../pages/StatisticPage/components/Styles/ButtonStyles';
 import styles from '../styles.module.scss';
 
 type Props = {
@@ -28,6 +31,14 @@ type Props = {
 };
 
 const TransitModal = ({ selectedCargo, open, setOpen }: Props) => {
+    const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
+        (state) => state.cargos
+    );
+
+    const { destinations } = commonCargos;
+
+    const dispatch = useDispatch();
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -56,14 +67,6 @@ const TransitModal = ({ selectedCargo, open, setOpen }: Props) => {
             setOpen(false);
         },
     });
-
-    const commonCargos = useSelector<AppRootStateType, commonCargosTypes>(
-        (state) => state.cargos
-    );
-
-    const { destinations } = commonCargos;
-
-    const dispatch = useDispatch();
 
     const onCloseModalHandler = () => {
         setOpen(false);
