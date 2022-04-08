@@ -5,7 +5,7 @@
 - Transits 
 - Statistics
 
-##Стек:
+## Стек:
     1) Typescript,React,Redux, 
     2) Modules, SCSS
     3) Либы: Material UI, DexExtreme Charts,Redux Persist, Formik
