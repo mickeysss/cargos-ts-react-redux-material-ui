@@ -47,7 +47,7 @@ const Table = ({
     };
 
     return (
-        <div style={{ height: 400, width: '100%', color: 'white' }}>
+        <div style={{ height: 490, width: '100%', color: 'white' }}>
             <ThemeProvider theme={theme}>
                 <DataGrid
                     rows={rows as cargoType[]}
