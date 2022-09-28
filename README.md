@@ -1,24 +1,23 @@
 # Cargos(Грузоперевозки)
 
-## На странице 3 раздела: 
+## Project consists 3 chapters: 
 - Cargos 
 - Transits 
 - Statistics
 
-## Стек:
+## Stack:
     1) Typescript,React,Redux, 
     2) Modules, SCSS
-    3) Либы: Material UI, DexExtreme Charts,Redux Persist, Formik
+    3) Libs: Material UI, DexExtreme Charts,Redux Persist, Formik
 
-### В разделе Cargos :
-    1. Возможность добавить новый груз на склад, есть возможность удалить и редактировать позицию склада.
-    2. Возможность отправить груз по 3 пунктам назначения. Отправленные грузы появляются в разделе Transits. 
+### Cargos chapter :
+    1. Adding,removing,editing new cargo in warehouse.
+    2. Sending cargos in three destinations. Sended cargos represented in chapter Transits. 
 
-### В разделе Transits: 
-    1. Возможность просмотреть все отправленные и завершенные грузы.
-    2. Возможность удалить, редактировать и завершить отправку.
-    3. Возможность отфильтровать грузы по направлениям
-    4. При принятии груза (complete cargo) необходимо выбрать количество принятого товара.
-
+### Transits chapter: 
+    1. Showed all shipped and completed cargos
+    2. Adding,removing,editing shipments.
+    3. Filtering cargos in all destinations.
+    4. Accepting cargo, selects the amount of goods received.
 ### В разделе Statistics:
-   Отображена статистика по отправленным и завершенным грузам.
+   Displays statistics on shipped and completed shipments.
