@@ -19,5 +19,5 @@
     2. Adding,removing,editing shipments.
     3. Filtering cargos in all destinations.
     4. Accepting cargo, selects the amount of goods received.
-### В разделе Statistics:
+### Statistics chapter:
    Displays statistics on shipped and completed shipments.
